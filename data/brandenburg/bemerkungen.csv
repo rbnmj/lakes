@@ -1,21 +1,36 @@
 bnr,name,bemerkung
 4,"Joachimsthal, Feriendorf, Grimnitzsee","Auftreten von Badedermatitis durch Zerkarien (Juckreiz, Hautausschlag), Hinweise an der Badestelle beachten!"
 5,"Joachimsthal, Liegewiese, Grimnitzsee","Auftreten von Badedermatitis durch Zerkarien (Juckreiz, Hautausschlag), Hinweise an der Badestelle beachten!"
-19,"Massowburg, Beetzsee","Aufgrund der geringen Sichttiefe können Rettungsmaßnahmen deutlich erschwert sein."
-22,"Brandenburg an der Havel OT Kirchmöser, Arke, Möserscher See","Aufgrund der geringen Sichttiefe können Rettungsmaßnahmen deutlich erschwert sein."
-23,"Camping- und Ferienpark am Plauer See, Plauer See","Aufgrund der geringen Sichttiefe können Rettungsmaßnahmen deutlich erschwert sein."
-90,"Bad Saarow, Strandbad Mitte, Scharmützelsee","Änderung am Badegewässer - Bewirtschaftungsmaßnahmen"
+35,"Ketzin/Havel, Ketziner Havelstrand, Havel",Gefahr der Blaualgenmassenentwicklung. Bitte Hinweise vor Ort beachten !
+36,"Hohennauen, Hohennauener See",Gefahr der Blaualgenmassenentwicklung. Bitte Hinweise vor Ort beachten !
+37,"Semlin, Bauerndeich, Hohennauener See",Gefahr der Blaualgenmassenentwicklung. Bitte Hinweise vor Ort beachten !
+38,"Ferchesar, Dranseschlucht, Hohennauener See (Ferchesarer See)",Gefahr der Blaualgenmassenentwicklung. Bitte Hinweise vor Ort beachten !
+39,"Wassersuppe, Hohennauener See",Gefahr der Blaualgenmassenentwicklung. Bitte Hinweise vor Ort beachten !
+40,"Ferchesar, Zeltplatz, Hohennauener See (Ferchesarer See)",Gefahr der Blaualgenmassenentwicklung. Bitte Hinweise vor Ort beachten !
+42,"Brieselang, Nymphensee","Auftreten von Badedermatitis durch Zerkarien (Juckreiz, Hautausschlag), Hinweise an der Badestelle beachten!"
+53,"Königs Wusterhausen OT Neue Mühle, Krimnicksee",Aufgrund der geringen Sichttiefe können Rettungsmaßnahmen deutlich erschwert sein.
+56,"Dolgenbrodt, Langer See",Aufgrund der geringen Sichttiefe können Rettungsmaßnahmen deutlich erschwert sein.
+62,"Schwerin, Schweriner See",Aufgrund der geringen Sichttiefe können Rettungsmaßnahmen deutlich erschwert sein.
+72,"Wolzig, Wolziger See",Einzelwertüberschreitungen der mikrobiologischen Parameter Escherichia coli und Enterokokken in der Nachkontrolle am 31.07. nicht bestätigt.
+81,"Bremsdorf, Zeltplatz, Großer Treppelsee","Gefahr der Blaualgenmassenentwicklung, bitte die Hinweise vor Ort beachten! Aufgrund der geringen Sichttiefe können Rettungsmaßnahmen deutlich erschwert sein."
+90,"Bad Saarow, Strandbad Mitte, Scharmützelsee",Änderung am Badegewässer - Bewirtschaftungsmaßnahmen
 97,"Niewisch, Schwielochsee","Aufgrund der geringen Sichttiefe können Rettungsmaßnahmen deutlich erschwert sein. Gefahr der Blaualgenmassenentwicklung, bitte die Hinweise vor Ort beachten!"
 106,"Limsdorf, Grubensee","Badestelle befindet sich im Naturschutzgebiet, Verhaltensregeln beachten!"
-118,"Alt Zeschdorf, Hohenjesarscher See","Empfehlung - nicht baden! Gefahr der Blaualgenmassenentwicklung, bitte die Hinweise vor Ort beachten!"
-129,"Diedersdorf, Weinbergsee","Mögliche Algenentwicklung, bitte die Hinweise vor Ort beachten!"
-136,"Gransee OT Seilershof, Kleiner Wentowsee","Aufgrund der geringen Sichttiefe können Rettungsmaßnahmen deutlich erschwert sein."
-149,"Tier- und Freizeitpark Oranienburg OT Germendorf, Waldsee","Aufgrund der geringen Sichttiefe können Rettungsmaßnahmen deutlich erschwert sein."
-154,"Kleinzerlang, Großer Prebelowsee","Badesteganlage für Nutzung vom Betreiber gesperrt!"
-191,"Tauer, Großsee","Steilstrand = Baden nur für Schwimmer"
+110,"Eggersdorf, Strandbad, Bötzsee",Barrierefreies Bad
+117,"Hennickendorf, Großer Stienitzsee",Barrierefreies Bad
+137,"Oranienburg, Lehnitzsee",Mikroskopischer Nachweis von Blaualgen
+139,"Fürstenberg OT Himmelpfort, Moderfitzsee",Aufgrund der geringen Sichttiefe können Rettungsmaßnahmen deutlich erschwert sein.
+141,"Hennigsdorf OT Nieder Neuendorf, Nieder Neuendorfer See",Mikroskopischer Nachweis von Blaualgen Aufgrund der geringen Sichttiefe können Rettungsmaßnahmen deutlich erschwert sein.
+149,"Tier- und Freizeitpark Oranienburg OT Germendorf, Waldsee",Mikroskopischer Nachweis von Blaualgen Aufgrund der geringen Sichttiefe können Rettungsmaßnahmen deutlich erschwert sein.
+154,"Kleinzerlang, Großer Prebelowsee",Badesteganlage für Nutzung aus sicherheitstechnischen Gründen vom Betreiber gesperrt!
+165,"Neuruppin, Jahnbad, Ruppiner See",Aufgrund der geringen Sichttiefe können Rettungsmaßnahmen deutlich erschwert sein.
+174,"Grünewalde, Grünewalder Lauch","ph-Wert=3,16 geogen bedingt"
+175,"Großkoschen, Senftenberger See","Prädikat ""Blaue Flagge"""
+179,"Waldbad Templin, Havel, Templiner See","Gefahr einer Algen- und Blaualgenmassenentwicklung, bitte auf Informationen des Betreibers achten und eigenverantwortlich handeln!"
+180,"Stadtbad Park Babelsberg, Havel, Tiefer See","Gefahr einer Algen- und Blaualgenmassenentwicklung, bitte auf Informationen des Betreibers achten und eigenverantwortlich handeln!"
+191,"Tauer, Großsee",Steilstrand = Baden nur für Schwimmer
 207,"Kallinchen, Campingplatz, Motzener See","Keine öffentliche Badestelle, nur für Campingplatzgäste!"
-210,"Rangsdorf, Strand am Rangsdorfer See, Rangsdorfer See","Aufgrund der geringen Sichttiefe können Rettungsmaßnahmen deutlich erschwert sein."
-266,"Grillendamm, Beetzsee","Aufgrund der geringen Sichttiefe können Rettungsmaßnahmen deutlich erschwert sein."
-275,"An der Badewiese, Groß Glienicker See","Gefahr einer Algen- und Blaualgenmassenentwicklung, bitte eigenverantwortlich handeln!"
-280,"Flussbadestelle Schwedt/Oder, Hohensaaten-Friedrichsthaler Wasserstraße","Änderung am Badegewässer - Bewirtschaftungsmaßnahmen"
-283,"Zehdenick OT Zabelsdorf, Großer Wentowsee","Aufgrund der geringen Sichttiefe können Rettungsmaßnahmen deutlich erschwert sein."
+210,"Rangsdorf, Strand am Rangsdorfer See, Rangsdorfer See",Aufgrund der geringen Sichttiefe können Rettungsmaßnahmen deutlich erschwert sein.
+260,"Ruhlsdorf, Strand, Feriendorf ""Dorado"", Ruhlesee",Keine öffentliche Badestelle!
+280,"Flussbadestelle Schwedt/Oder, Hohensaaten-Friedrichsthaler Wasserstraße",Änderung am Badegewässer - Bewirtschaftungsmaßnahmen
+283,"Zehdenick OT Zabelsdorf, Großer Wentowsee",Aufgrund der geringen Sichttiefe können Rettungsmaßnahmen deutlich erschwert sein.

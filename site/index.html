@@ -89,10 +89,17 @@
     box-shadow:0 -6px 30px rgba(15,23,42,.25);
     padding:10px 18px calc(env(safe-area-inset-bottom) + 18px);
     transform:translateY(105%); transition:transform .25s ease;
-    max-height:72vh; overflow-y:auto;
+    max-height:72vh; overflow-y:auto; overscroll-behavior:contain;
   }
   #sheet.open { transform:translateY(0); }
-  .grab { width:40px; height:4px; border-radius:2px; background:#d5d9e0; margin:2px auto 12px; }
+  /* full-width drag strip: pull the sheet down to dismiss it */
+  .grab-zone {
+    margin:0 -18px; padding:2px 18px 12px;   /* same 18px block the handle used before */
+    cursor:grab; touch-action:none;
+  }
+  .grab-zone:active { cursor:grabbing; }
+  .grab { width:40px; height:4px; border-radius:2px; background:#d5d9e0; margin:0 auto; }
+  .grab-zone:active .grab { background:#b6bcc6; }
   .badge {
     display:inline-block; padding:4px 10px; border-radius:999px;
     color:#fff; font-size:13px; font-weight:700; margin-bottom:6px;
@@ -112,6 +119,8 @@
   .note.clamp .note-text { display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
   .note .more { display:block; background:none; border:0; padding:4px 0 0;
                 color:#155ec4; font-weight:600; font-size:13px; cursor:pointer; }
+  .note-link { display:inline-block; margin-top:6px; font-size:13px; }
+  .note-trunc { display:block; margin-top:6px; font-size:12.5px; color:var(--muted); font-style:italic; }
   #sheet a { color:#155ec4; font-weight:600; text-decoration:none; }
   .foot { margin-top:12px; font-size:12px; color:var(--muted); }
 
@@ -353,7 +362,7 @@
 </div>
 
 <div id="sheet" role="dialog" aria-modal="false" aria-label="Details">
-  <div class="grab"></div>
+  <div class="grab-zone" role="button" tabindex="0" aria-label="Schließen / Close"><div class="grab"></div></div>
   <div id="sheet-content"></div>
 </div>
 
@@ -386,6 +395,8 @@ const STR = {
     official: 'Offizielle Seite der Badestelle →',
     sampled: 'Messung vom', source: 'Quelle',
     more: 'mehr lesen', less: 'weniger anzeigen',
+    truncNote: 'Der Meldetext liegt uns nur gekürzt vor.',
+    truncLink: 'Vollständige Meldung beim Amt ↗',
     close: 'Schließen', locateT: 'Meinen Standort anzeigen',
     filter: 'Filter',
     filNoData: 'Seen ohne Messwert weiterhin anzeigen',
@@ -439,6 +450,8 @@ const STR = {
     official: 'Official page of this site →',
     sampled: 'Measured on', source: 'Source',
     more: 'read more', less: 'show less',
+    truncNote: 'Only a shortened version of this notice is available to us.',
+    truncLink: 'Full notice from the authority ↗',
     close: 'Close', locateT: 'Show my location',
     filter: 'Filter',
     filNoData: 'Keep showing lakes without a measurement',
@@ -511,7 +524,93 @@ fetch('data/brandenburg.geojson')
 
 const sheet = document.getElementById('sheet');
 const sheetContent = document.getElementById('sheet-content');
-map.on('click', () => { sheet.classList.remove('open'); selectMarker(null); });
+function closeSheet() {
+  sheet.classList.remove('open');
+  selectMarker(null);
+}
+map.on('click', closeSheet);
+
+// -------------------------------------------------- pull down to dismiss
+(function () {
+  const CLOSE_PX = 90;   // drag further than this and the sheet closes
+  const START_PX = 8;    // ignore taps and tiny jitter
+  let y0 = 0, dy = 0, armed = false, active = false, dragged = false;
+
+  const setY = px => { sheet.style.transform = px ? `translateY(${px}px)` : ''; };
+
+  function begin(clientY, fromHandle) {
+    if (!sheet.classList.contains('open')) return;
+    // from the handle always; from the content only when scrolled to the top
+    armed = fromHandle || sheet.scrollTop <= 0;
+    y0 = clientY; dy = 0; active = false; dragged = false;
+  }
+
+  function move(clientY, ev) {
+    if (!armed) return;
+    const d = clientY - y0;
+    if (!active) {
+      if (d < START_PX) return;            // upward or negligible -> let it scroll
+      if (sheet.scrollTop > 0) { armed = false; return; }
+      active = true; dragged = true;
+      sheet.style.transition = 'none';
+    }
+    dy = Math.max(0, d);
+    setY(dy);
+    if (ev.cancelable) ev.preventDefault();
+  }
+
+  function finish() {
+    armed = false;
+    if (!active) return;
+    active = false;
+    sheet.style.transition = '';
+    if (dy > CLOSE_PX) {
+      closeSheet();                         // slides the rest of the way out
+      requestAnimationFrame(() => setY(''));
+    } else {
+      setY('');                             // snap back
+    }
+  }
+
+  // touch: drag anywhere on the sheet (as long as its content is at the top)
+  sheet.addEventListener('touchstart', e => {
+    if (e.touches.length === 1) begin(e.touches[0].clientY, !!e.target.closest('.grab-zone'));
+  }, { passive: true });
+  sheet.addEventListener('touchmove', e => {
+    if (e.touches.length === 1) move(e.touches[0].clientY, e);
+  }, { passive: false });
+  sheet.addEventListener('touchend', finish);
+  sheet.addEventListener('touchcancel', finish);
+
+  // tap / click the bar itself to close (ignored right after a drag)
+  const zone = sheet.querySelector('.grab-zone');
+  zone.addEventListener('click', () => { if (!dragged) closeSheet(); });
+  zone.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); closeSheet(); }
+  });
+
+  // mouse: handle only, so text in the sheet stays selectable
+  zone.addEventListener('mousedown', e => {
+    if (e.button !== 0) return;
+    begin(e.clientY, true);
+    const onMove = ev => move(ev.clientY, ev);
+    const onUp = () => {
+      finish();
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onUp);
+    };
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+    e.preventDefault();
+  });
+})();
+
+// keyboard escape hatch
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape' || !sheet.classList.contains('open')) return;
+  if (document.querySelector('#rank:not([hidden]), #finder:not([hidden]), #fil:not([hidden])')) return;
+  closeSheet();
+});
 
 function esc(s) {
   return String(s).replace(/[&<>"']/g, c =>
@@ -594,10 +693,10 @@ function openSheet(p) {
     <div class="sub">${[p.water, p.area, regionName(p)]
       .filter(Boolean).map(esc).join(' · ')}</div>
     ${rows.length ? `<div class="vals">${rows.join('')}</div>` : ''}
-    ${p.warn ? `<div class="note warn"><span class="note-text"><b>${t('warnL')}:</b> ${esc(p.warn)}</span></div>` : ''}
+    ${p.warn ? noteBlock('warn', t('warnL'), p.warn, p.link) : ''}
     ${p.bacteriology && p.bacteriology.trim().toLowerCase() !== 'keine beanstandungen'
-      ? `<div class="note warn"><span class="note-text"><b>${t('bactL')}:</b> ${esc(p.bacteriology)}</span></div>` : ''}
-    ${p.info ? `<div class="note"><span class="note-text">${esc(p.info)}</span></div>` : ''}
+      ? noteBlock('warn', t('bactL'), p.bacteriology, p.link) : ''}
+    ${p.info ? noteBlock('', '', p.info, p.link) : ''}
     ${p.amenities ? `<div class="sub" style="margin-top:8px">${[
         p.amenities.wc     ? t('wc')     + ': ' + esc(p.amenities.wc)     : null,
         p.amenities.gastro ? t('gastro') + ': ' + esc(p.amenities.gastro) : null,
@@ -611,9 +710,23 @@ function openSheet(p) {
   sheet.scrollTop = 0;
 }
 
-// Collapse long notes to 3 lines with a "read more" toggle
+// One note block. Warnings are never collapsed - safety text should be readable
+// at a glance. If the source itself truncated the remark (the Brandenburg KML
+// caps them at 35 chars, "…entwic..."), say so and link to the official notice.
+function noteBlock(cls, label, text, link) {
+  const s = String(text).trim();
+  const cut = /\.\.\.$/.test(s);
+  const body = (label ? `<b>${label}:</b> ` : '') + esc(cut ? s.slice(0, -3).trim() + ' …' : s);
+  const tail = cut
+    ? `<span class="note-trunc">${t('truncNote')}</span>` +
+      (link ? ` <a class="note-link" href="${esc(link)}" target="_blank" rel="noopener">${t('truncLink')}</a>` : '')
+    : '';
+  return `<div class="note ${cls}"><span class="note-text">${body}</span>${tail}</div>`;
+}
+
+// Collapse long notes to 3 lines with a "read more" toggle (never warnings)
 function clampNotes() {
-  sheetContent.querySelectorAll('.note').forEach(n => {
+  sheetContent.querySelectorAll('.note:not(.warn)').forEach(n => {
     const txt = n.querySelector('.note-text');
     if (!txt) return;
     n.classList.add('clamp');

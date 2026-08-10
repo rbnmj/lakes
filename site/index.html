@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LAKES – Badeseen in Berlin &amp; Brandenburg</title>
+<meta name="description" content="Aktuelle Badegewässerqualität, Wassertemperatur und Warnhinweise für Badeseen in Berlin und Brandenburg – auf einer interaktiven Karte.">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<style>
+  :root {
+    --green:#2e9e44; --yellow:#e0a800; --red:#d9432f; --ban:#7a1f14; --unknown:#8a8f98;
+    --bg:#fff; --ink:#1c2330; --muted:#5c6470; --chip:#f1f3f6; --chip-on:#1c2330;
+    --sheet-r:18px; --shadow:0 4px 24px rgba(15,23,42,.18);
+  }
+  * { box-sizing:border-box; margin:0; }
+  html,body { height:100%; }
+  body { font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; color:var(--ink); overscroll-behavior:none; }
+  #map { position:fixed; inset:0; }
+
+  /* top bar */
+  header {
+    position:fixed; top:0; left:0; right:0; z-index:1000;
+    padding:calc(env(safe-area-inset-top) + 10px) 12px 8px;
+    pointer-events:none;
+  }
+  .toprow { display:flex; gap:8px; align-items:center; }
+  .brand {
+    flex:0 0 auto; pointer-events:auto;
+    background:var(--bg); border-radius:12px; box-shadow:var(--shadow);
+    padding:8px 12px; font-weight:700; font-size:15px;
+  }
+  .brand small { font-weight:500; color:var(--muted); }
+  @media (max-width:560px) { .brand small { display:none; } }
+
+  /* search */
+  .searchbar { position:relative; flex:1; min-width:0; pointer-events:auto; }
+  #search {
+    width:100%; border:0; border-radius:12px; padding:10px 12px;
+    font:inherit; font-size:14px; background:var(--bg); box-shadow:var(--shadow);
+  }
+  #search:focus { outline:2px solid #155ec4; }
+  #search-results {
+    position:absolute; top:calc(100% + 6px); left:0; right:0; z-index:1001;
+    list-style:none; margin:0; padding:6px; max-height:45vh; overflow-y:auto;
+    background:var(--bg); border-radius:12px; box-shadow:var(--shadow);
+  }
+  #search-results[hidden] { display:none; }
+  #search-results button {
+    width:100%; text-align:left; border:0; background:none; padding:8px 10px;
+    border-radius:8px; font:inherit; color:inherit; cursor:pointer;
+  }
+  #search-results button:hover, #search-results button:focus { background:var(--chip); }
+  .sr-sub { display:block; font-size:12px; color:var(--muted); }
+  .sr-none { padding:8px 10px; font-size:14px; color:var(--muted); }
+
+  .chips {
+    display:flex; gap:8px; overflow-x:auto; padding:10px 2px 4px;
+    pointer-events:auto; scrollbar-width:none; -webkit-overflow-scrolling:touch;
+  }
+  .chips::-webkit-scrollbar { display:none; }
+  .chip {
+    flex:0 0 auto; border:0; border-radius:999px; padding:8px 14px;
+    background:var(--chip); color:var(--ink); font-size:13.5px; font-weight:600;
+    box-shadow:var(--shadow); cursor:pointer; white-space:nowrap;
+  }
+  .chip[aria-pressed="true"] { background:var(--chip-on); color:#fff; }
+
+  /* locate button */
+  #locate {
+    position:fixed; right:12px; bottom:calc(env(safe-area-inset-bottom) + 24px); z-index:1000;
+    width:48px; height:48px; border-radius:50%; border:0; background:var(--bg);
+    box-shadow:var(--shadow); font-size:20px; cursor:pointer;
+  }
+
+  /* bottom sheet */
+  #sheet {
+    position:fixed; left:0; right:0; bottom:0; z-index:1100;
+    background:var(--bg); border-radius:var(--sheet-r) var(--sheet-r) 0 0;
+    box-shadow:0 -6px 30px rgba(15,23,42,.25);
+    padding:10px 18px calc(env(safe-area-inset-bottom) + 18px);
+    transform:translateY(105%); transition:transform .25s ease;
+    max-height:72vh; overflow-y:auto;
+  }
+  #sheet.open { transform:translateY(0); }
+  .grab { width:40px; height:4px; border-radius:2px; background:#d5d9e0; margin:2px auto 12px; }
+  .badge {
+    display:inline-block; padding:4px 10px; border-radius:999px;
+    color:#fff; font-size:13px; font-weight:700; margin-bottom:6px;
+  }
+  #sheet h2 { font-size:20px; margin:2px 0 0; }
+  .sub { color:var(--muted); font-size:13.5px; margin-bottom:12px; }
+  .vals { display:grid; grid-template-columns:repeat(auto-fit,minmax(96px,1fr)); gap:8px; margin:10px 0 4px; }
+  .val { background:var(--chip); border-radius:12px; padding:10px 12px; }
+  .val b { display:block; font-size:17px; }
+  .val span { font-size:12px; color:var(--muted); }
+  .val .pct { display:block; font-size:11px; color:var(--muted); margin-top:3px;
+              padding-top:3px; border-top:1px solid #e2e6ec; }
+  .rate { display:inline-block; margin-left:6px; padding:1px 7px; border-radius:999px;
+          font-size:11px; font-weight:700; color:#fff; vertical-align:2px; }
+  .note { border-left:3px solid var(--yellow); background:#fdf6e3; padding:8px 12px; border-radius:0 10px 10px 0; margin:10px 0; font-size:14px; }
+  .note.warn { border-color:var(--red); background:#fbeae7; }
+  .note.clamp .note-text { display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+  .note .more { display:block; background:none; border:0; padding:4px 0 0;
+                color:#155ec4; font-weight:600; font-size:13px; cursor:pointer; }
+  #sheet a { color:#155ec4; font-weight:600; text-decoration:none; }
+  .foot { margin-top:12px; font-size:12px; color:var(--muted); }
+
+  /* ranking + finder dialogs */
+  #rank-backdrop, #finder-backdrop { position:fixed; inset:0; z-index:1150; background:rgba(15,23,42,.35); }
+  #rank, #finder {
+    position:fixed; z-index:1200; left:12px; right:12px; margin:0 auto; max-width:420px;
+    top:calc(env(safe-area-inset-top) + 64px); max-height:78vh;
+    background:var(--bg); border-radius:16px; box-shadow:var(--shadow);
+    display:flex; flex-direction:column;
+  }
+  #rank[hidden], #rank-backdrop[hidden], #finder[hidden], #finder-backdrop[hidden] { display:none; }
+  .rank-head { display:flex; align-items:center; padding:14px 16px 8px; }
+  .rank-head b { font-size:17px; }
+  #rank-close, #finder-close {
+    margin-left:auto; border:0; background:var(--chip); border-radius:50%;
+    width:30px; height:30px; font-size:14px; cursor:pointer;
+  }
+
+  /* lake finder */
+  .f-body { padding:0 16px 14px; overflow-y:auto; }
+  .f-sec { margin:10px 0; }
+  .f-sec > label { display:block; font-size:13px; font-weight:700; margin-bottom:6px; }
+  .f-row { display:flex; gap:8px; }
+  #f-addr { flex:1; min-width:0; border:1px solid #d5d9e0; border-radius:10px; padding:9px 10px; font:inherit; font-size:14px; }
+  #f-gps { flex:0 0 42px; border:0; background:var(--chip); border-radius:10px; font-size:17px; cursor:pointer; }
+  .seg { display:flex; gap:6px; flex-wrap:wrap; }
+  .seg button {
+    border:0; background:var(--chip); padding:7px 12px; border-radius:999px;
+    font:inherit; font-size:13px; font-weight:600; cursor:pointer; white-space:nowrap;
+  }
+  .seg button[aria-pressed="true"] { background:var(--chip-on); color:#fff; }
+  #f-time { width:100%; }
+  .f-prio { display:flex; align-items:center; justify-content:space-between; gap:8px; margin:7px 0; font-size:13.5px; flex-wrap:wrap; }
+  .f-cta {
+    width:100%; border:0; border-radius:12px; background:#155ec4; color:#fff;
+    font:inherit; font-weight:700; font-size:15px; padding:12px; margin-top:10px; cursor:pointer;
+  }
+  .f-hint { font-size:11.5px; color:var(--muted); margin-top:8px; }
+  .f-card { background:var(--chip); border-radius:12px; padding:12px; margin:10px 0; font-size:14px; }
+  .f-card h3 { font-size:15.5px; margin-bottom:2px; }
+  .f-card ul { margin:4px 0 0 18px; padding:0; }
+  .f-sub { color:var(--muted); font-size:12.5px; }
+  .f-actions { display:flex; gap:12px; margin-top:9px; flex-wrap:wrap; }
+  .f-actions a, .f-link {
+    border:0; background:none; padding:0; color:#155ec4;
+    font:inherit; font-size:13.5px; font-weight:600; cursor:pointer; text-decoration:none;
+  }
+  .rank-tabs { display:flex; gap:6px; padding:2px 14px 8px; overflow-x:auto; scrollbar-width:none; }
+  .rank-tabs::-webkit-scrollbar { display:none; }
+  .rank-tabs button {
+    flex:0 0 auto; border:0; border-radius:999px; padding:6px 12px;
+    background:var(--chip); color:var(--ink); font-size:13px; font-weight:600;
+    cursor:pointer; white-space:nowrap;
+  }
+  .rank-tabs button[aria-pressed="true"] { background:var(--chip-on); color:#fff; }
+  #rank-sub { padding:0 16px 6px; font-size:12px; color:var(--muted); }
+  #rank-list { list-style:none; margin:0; padding:0 8px 12px; overflow-y:auto; }
+  #rank-list button {
+    display:flex; align-items:center; gap:10px; width:100%; text-align:left;
+    border:0; background:none; padding:9px 8px; border-radius:10px;
+    font:inherit; color:inherit; cursor:pointer;
+  }
+  #rank-list button:active { background:var(--chip); }
+  .rank-pos { flex:0 0 22px; font-weight:700; color:var(--muted); }
+  .rank-name { min-width:0; }
+  .rank-name b { display:block; font-size:14.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .rank-name span { display:block; font-size:12px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .rank-val { margin-left:auto; font-weight:700; font-size:14px; white-space:nowrap; }
+
+  /* legend */
+  #legend {
+    position:fixed; left:12px; bottom:calc(env(safe-area-inset-bottom) + 24px); z-index:900;
+    background:var(--bg); border-radius:12px; box-shadow:var(--shadow);
+    padding:8px 12px; font-size:12px; color:var(--muted);
+  }
+  #legend i { display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:5px; }
+  .leaflet-control-attribution { font-size:10px; }
+  @media (min-width:700px) {
+    #sheet { left:auto; right:16px; bottom:16px; width:400px; border-radius:var(--sheet-r); }
+    #sheet.open { transform:none; }
+  }
+</style>
+</head>
+<body>
+<div id="map" role="application" aria-label="Karte der Badestellen"></div>
+
+<header>
+  <div class="toprow">
+    <span class="brand">LAKES <small data-i18n="subtitle"></small></span>
+    <div class="searchbar">
+      <input id="search" type="search" autocomplete="off" spellcheck="false"
+             role="combobox" aria-expanded="false" aria-controls="search-results">
+      <ul id="search-results" hidden></ul>
+    </div>
+  </div>
+  <div class="chips" id="chips">
+    <button class="chip" id="rank-open" aria-haspopup="dialog">🏆 Top 10</button>
+    <button class="chip" id="finder-open" aria-haspopup="dialog">🎯 <span data-i18n="finder"></span></button>
+    <button class="chip" id="lang-toggle" title="Sprache / Language"></button>
+    <button class="chip" data-f="green"  aria-pressed="false" data-i18n="chipGood"></button>
+    <button class="chip" data-f="warm"   aria-pressed="false">≥ 20 °C</button>
+    <button class="chip" data-f="eu"     aria-pressed="false" data-i18n="chipEU"></button>
+    <button class="chip" data-f="berlin" aria-pressed="false">Berlin</button>
+    <button class="chip" data-f="brandenburg" aria-pressed="false">Brandenburg</button>
+  </div>
+</header>
+
+<button id="locate">📍</button>
+
+<div id="legend">
+  <i style="background:var(--green)"></i><span data-i18n="legGreen"></span>&nbsp;
+  <i style="background:var(--yellow)"></i><span data-i18n="legYellow"></span>&nbsp;
+  <i style="background:var(--red)"></i><span data-i18n="legRed"></span>&nbsp;
+  <i style="background:var(--ban)"></i><span data-i18n="legBan"></span>&nbsp;
+  <i style="background:var(--unknown)"></i><span data-i18n="legNA"></span>
+</div>
+
+<div id="rank-backdrop" hidden></div>
+<div id="rank" role="dialog" aria-modal="true" aria-label="Top 10" hidden>
+  <div class="rank-head">
+    <b>🏆 Top 10</b>
+    <button id="rank-close">✕</button>
+  </div>
+  <div class="rank-tabs" id="rank-tabs">
+    <button data-r="warm"  aria-pressed="true"  data-i18n="rankWarm"></button>
+    <button data-r="cold"  aria-pressed="false" data-i18n="rankCold"></button>
+    <button data-r="clear" aria-pressed="false" data-i18n="rankClear"></button>
+  </div>
+  <div id="rank-sub"></div>
+  <ol id="rank-list"></ol>
+</div>
+
+<div id="finder-backdrop" hidden></div>
+<div id="finder" role="dialog" aria-modal="true" aria-label="Lake finder" hidden>
+  <div class="rank-head">
+    <b>🎯 <span data-i18n="finder"></span></b>
+    <button id="finder-close">✕</button>
+  </div>
+  <div class="f-body">
+    <div id="f-form">
+      <div class="f-sec">
+        <label data-i18n="fLoc"></label>
+        <div class="f-row">
+          <input id="f-addr" type="text" autocomplete="off" spellcheck="false">
+          <button id="f-gps">📍</button>
+        </div>
+        <div id="f-loc-status" class="f-hint"></div>
+      </div>
+      <div class="f-sec">
+        <label data-i18n="fMode"></label>
+        <div class="seg" id="f-mode">
+          <button data-m="car"     aria-pressed="true">🚗 <span data-i18n="mCar"></span></button>
+          <button data-m="transit" aria-pressed="false">🚌 <span data-i18n="mTransit"></span></button>
+          <button data-m="bike"    aria-pressed="false">🚲 <span data-i18n="mBike"></span></button>
+        </div>
+      </div>
+      <div class="f-sec">
+        <label><span data-i18n="fTime"></span>: <b id="f-time-val">60</b> min</label>
+        <input id="f-time" type="range" min="15" max="120" step="15" value="60">
+      </div>
+      <div class="f-sec">
+        <label data-i18n="fPrio"></label>
+        <div id="f-prios"></div>
+      </div>
+      <button id="f-go" class="f-cta"></button>
+      <div class="f-hint" id="f-est-hint"></div>
+    </div>
+    <div id="f-results" hidden></div>
+  </div>
+</div>
+
+<div id="sheet" role="dialog" aria-modal="false" aria-label="Details">
+  <div class="grab"></div>
+  <div id="sheet-content"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+// ------------------------------------------------------------------ i18n
+const STR = {
+  de: {
+    subtitle: 'Badeseen Berlin & Brandenburg',
+    searchPh: 'See oder Badestelle suchen …', noHits: 'Keine Treffer',
+    chipGood: 'Nur gute Qualität', chipEU: 'EU: ausgezeichnet',
+    legGreen: 'geeignet', legYellow: 'Warnung', legRed: 'abgeraten',
+    legBan: 'Verbot', legNA: 'k. A.',
+    rankWarm: 'Wärmste', rankCold: 'Kälteste', rankClear: 'Klarste',
+    rankSubTemp: 'Wassertemperatur (letzte Messung)',
+    rankSubVis: 'Sichttiefe (letzte Messung)',
+    shareBest: n => `${n} Seen teilen sich den Bestwert`,
+    status: { green: 'Zum Baden geeignet', yellow: 'Beanstandet – Warnhinweise beachten',
+              red: 'Vom Baden wird abgeraten', ban: 'Badeverbot', unknown: 'Keine aktuelle Bewertung' },
+    eu: { ausgezeichnet: 'ausgezeichnet', gut: 'gut', ausreichend: 'ausreichend', mangelhaft: 'mangelhaft' },
+    temp: 'Wassertemperatur', vis: 'Sichttiefe',
+    ecoliL: 'E. coli /100 ml', enteroL: 'Enterokokken /100 ml', euL: 'EU-Einstufung',
+    pctTemp: v => `wärmer als ${v} % der Seen`,
+    pctVis: v => `klarer als ${v} % der Seen`,
+    pctClean: v => `sauberer als ${v} % der Seen`,
+    pctTitle: n => `Vergleich mit ${n} bewerteten Badestellen`,
+    rateElevated: 'erhöht', rateCritical: 'kritisch', rateTitle: 'Bewertung des Einzelwerts',
+    warnL: 'Warnung', bactL: 'Bakteriologie',
+    wc: 'WC', gastro: 'Gastro', rescue: 'Rettung', beach: 'Strand',
+    official: 'Offizielle Seite der Badestelle →',
+    sampled: 'Messung vom', source: 'Quelle',
+    more: 'mehr lesen', less: 'weniger anzeigen',
+    close: 'Schließen', locateT: 'Meinen Standort anzeigen',
+    finder: 'Seefinder',
+    fLoc: 'Startpunkt', fAddrPh: 'Adresse oder Ort …', fMyLoc: 'Mein Standort',
+    fLocSet: 'Startpunkt:', fLocErr: 'Ort nicht gefunden – bitte Adresse prüfen',
+    fLocNeed: 'Bitte Standort setzen (📍) oder Adresse eingeben',
+    fMode: 'Verkehrsmittel', mCar: 'Auto', mTransit: 'ÖPNV', mBike: 'Rad',
+    fTime: 'Max. Fahrzeit', fPrio: 'Was ist dir wichtig?',
+    prio_warm: 'Wassertemperatur',
+    prio_clear: 'Sichttiefe', prio_amen: 'Ausstattung (WC, Gastro …)',
+    w0: 'egal', w1: 'wichtig', w2: 'sehr wichtig',
+    tCold: 'kalt', tWarm: 'warm',
+    fGo: 'Meine Top 3 finden', fSearching: 'Suche Ort …',
+    fNone: 'Keine passenden Seen in Reichweite – Fahrzeit erhöhen?',
+    fRoute: 'Route (Google Maps)', fShow: 'Auf Karte zeigen', fEdit: '↩ Suche anpassen',
+    fExpect: 'Was dich erwartet', fBring: 'Mitbringen & beachten',
+    fTravel: (km, min) => `${km} km · ca. ${min} min`,
+    fEstHint: 'Fahrzeiten grob geschätzt (Luftlinie) · Ortssuche: © OpenStreetMap/Nominatim',
+    bBase: 'Sonnenschutz & Trinkwasser', bNoWc: 'Keine Toiletten vor Ort',
+    bGastro: 'Imbiss/Gastronomie vor Ort', bNoGastro: 'Snacks & Picknick mitbringen',
+    bRescue: 'Rettungsschwimmer vor Ort', bNoRescue: 'Keine Wasseraufsicht – vorsichtig schwimmen',
+    bMurky: 'Geringe Sichttiefe – Badeschuhe sinnvoll',
+    bFresh: v => `Frisches Wasser (${v} °C)`,
+  },
+  en: {
+    subtitle: 'Bathing lakes in Berlin & Brandenburg',
+    searchPh: 'Search for a lake …', noHits: 'No matches',
+    chipGood: 'Good quality only', chipEU: 'EU: excellent',
+    legGreen: 'suitable', legYellow: 'warning', legRed: 'not advised',
+    legBan: 'banned', legNA: 'n/a',
+    rankWarm: 'Warmest', rankCold: 'Coldest', rankClear: 'Clearest',
+    rankSubTemp: 'Water temperature (latest sample)',
+    rankSubVis: 'Visibility depth (latest sample)',
+    shareBest: n => `${n} lakes share the best value`,
+    status: { green: 'Suitable for bathing', yellow: 'Objections – heed the warnings',
+              red: 'Bathing not advised', ban: 'Bathing ban', unknown: 'No current assessment' },
+    eu: { ausgezeichnet: 'excellent', gut: 'good', ausreichend: 'sufficient', mangelhaft: 'poor' },
+    temp: 'Water temperature', vis: 'Visibility depth',
+    ecoliL: 'E. coli /100 ml', enteroL: 'Enterococci /100 ml', euL: 'EU classification',
+    pctTemp: v => `warmer than ${v} % of lakes`,
+    pctVis: v => `clearer than ${v} % of lakes`,
+    pctClean: v => `cleaner than ${v} % of lakes`,
+    pctTitle: n => `Compared with ${n} assessed bathing sites`,
+    rateElevated: 'elevated', rateCritical: 'critical', rateTitle: 'Rating of this single value',
+    warnL: 'Warning', bactL: 'Bacteriology',
+    wc: 'WC', gastro: 'Food', rescue: 'Lifeguard', beach: 'Beach',
+    official: 'Official page of this site →',
+    sampled: 'Measured on', source: 'Source',
+    more: 'read more', less: 'show less',
+    close: 'Close', locateT: 'Show my location',
+    finder: 'Lake finder',
+    fLoc: 'Starting point', fAddrPh: 'Address or place …', fMyLoc: 'My location',
+    fLocSet: 'Starting point:', fLocErr: 'Place not found – please check the address',
+    fLocNeed: 'Please set your location (📍) or enter an address',
+    fMode: 'Transport', mCar: 'Car', mTransit: 'Transit', mBike: 'Bike',
+    fTime: 'Max. travel time', fPrio: 'What matters to you?',
+    prio_warm: 'Water temperature',
+    prio_clear: 'Visibility depth', prio_amen: 'Facilities (WC, food …)',
+    w0: 'n/a', w1: 'important', w2: 'very important',
+    tCold: 'cold', tWarm: 'warm',
+    fGo: 'Find my top 3', fSearching: 'Searching place …',
+    fNone: 'No suitable lakes in range – try a longer travel time?',
+    fRoute: 'Directions (Google Maps)', fShow: 'Show on map', fEdit: '↩ Adjust search',
+    fExpect: 'What to expect', fBring: 'Bring & note',
+    fTravel: (km, min) => `${km} km · approx. ${min} min`,
+    fEstHint: 'Travel times are rough straight-line estimates · Place search: © OpenStreetMap/Nominatim',
+    bBase: 'Sun protection & drinking water', bNoWc: 'No toilets on site',
+    bGastro: 'Snack bar / food on site', bNoGastro: 'Bring snacks & a picnic',
+    bRescue: 'Lifeguards on site', bNoRescue: 'No lifeguards – swim with care',
+    bMurky: 'Low visibility – water shoes recommended',
+    bFresh: v => `Fresh water (${v} °C)`,
+  },
+};
+let lang = 'de';
+try {
+  lang = localStorage.getItem('lakes-lang') ||
+         ((navigator.language || 'de').toLowerCase().startsWith('de') ? 'de' : 'en');
+} catch (e) {}
+const t = key => STR[lang][key];
+
+const COLORS = { green:'#2e9e44', yellow:'#e0a800', red:'#d9432f', ban:'#7a1f14', unknown:'#8a8f98' };
+const filters = { green:false, warm:false, eu:false, berlin:false, brandenburg:false };
+let allFeatures = [], layer = null, currentP = null;
+
+const map = L.map('map', { zoomControl:false })
+  .setView([52.45, 13.35], 9);
+L.control.zoom({ position:'topright' }).addTo(map);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 18,
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> | Daten: LaGeSo Berlin (CC-BY 4.0), Land Brandenburg, EEA'
+}).addTo(map);
+
+// Grey out everything outside Brandenburg (incl. Berlin) so the assessed
+// region stands out. Mask = world polygon with the state boundary as a hole.
+map.createPane('mask').style.zIndex = 350;  // below markers (overlayPane: 400)
+fetch('data/brandenburg.geojson')
+  .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+  .then(g => {
+    const outer = g.geometry.coordinates[0].map(([lon, lat]) => [lat, lon]);
+    const world = [[-89, -179], [-89, 179], [89, 179], [89, -179]];
+    L.polygon([world, outer], {
+      pane: 'mask', interactive: false, stroke: false,
+      fillColor: '#6b7280', fillOpacity: .35,
+    }).addTo(map);
+    L.polyline(outer, {
+      pane: 'mask', interactive: false,
+      color: '#4b5563', weight: 1.5, opacity: .7,
+    }).addTo(map);
+  })
+  .catch(() => {});  // mask is cosmetic - never block the map
+
+const sheet = document.getElementById('sheet');
+const sheetContent = document.getElementById('sheet-content');
+map.on('click', () => { sheet.classList.remove('open'); selectMarker(null); });
+
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, c =>
+    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// "1,5" <-> "1.5" depending on UI language (source data uses German commas)
+const fmtVal = v => lang === 'de' ? String(v).replace('.', ',') : String(v).replace(',', '.');
+
+function visible(p) {
+  if (filters.green && p.status !== 'green') return false;
+  if (filters.warm && !(p.temp >= 20)) return false;
+  if (filters.eu && p.eu_class !== 'ausgezeichnet') return false;
+  const regionOn = filters.berlin || filters.brandenburg;
+  if (regionOn && !filters[p.region]) return false;
+  return true;
+}
+
+function fmtDate(iso) {
+  if (!iso) return null;
+  const [y, m, d] = iso.split('-');
+  return lang === 'de' ? `${d}.${m}.${y}` : `${y}-${m}-${d}`;
+}
+
+// Single-sample microbiology flags. Unremarkable values get NO label — only
+// elevated/critical concentrations are flagged. Boundaries: EU Bathing Water
+// Directive (2006/7/EC) inland "good" benchmarks (E. coli 1000, enterococci
+// 400) and the German single-sample action limits (E. coli 1800, enterococci 700).
+const RATE_LIMITS = { ecoli: [1000, 1800], entero: [400, 700] };
+function parseCount(v) {
+  // "<15" -> 15 (at/below detection limit), ">1000" -> 1000, "144" -> 144
+  const m = String(v).match(/\d+/);
+  return m ? parseInt(m[0], 10) : null;
+}
+function rateBadge(value, type) {
+  const n = parseCount(value);
+  if (n === null) return '';
+  const [elevAt, critAt] = RATE_LIMITS[type];
+  if (n <= elevAt) return '';
+  const crit = n > critAt;
+  return `<span class="rate" style="background:${crit ? '#d9432f' : '#e0a800'}"
+    title="${esc(t('rateTitle'))}">${esc(crit ? t('rateCritical') : t('rateElevated'))}</span>`;
+}
+
+// Percentile vs. all other assessed lakes (computed in build_geojson.py)
+function pctLine(p, key, strKey) {
+  const v = p.pct && p.pct[key];
+  if (v == null) return '';
+  const n = (p.pct_n && p.pct_n[key]) || '';
+  return `<span class="pct" title="${esc(t('pctTitle')(n))}">${esc(t(strKey)(v))}</span>`;
+}
+
+function regionName(p) { return p.region === 'berlin' ? 'Berlin' : 'Brandenburg'; }
+
+function openSheet(p) {
+  currentP = p;
+  selectMarker(p.id);
+  const rows = [];
+  if (p.temp != null)    rows.push(`<div class="val"><b>${fmtVal(p.temp)} °C</b><span>${t('temp')}</span>${pctLine(p, 'temp', 'pctTemp')}</div>`);
+  if (p.visibility)      rows.push(`<div class="val"><b>${esc(fmtVal(p.visibility))} m</b><span>${t('vis')}</span>${pctLine(p, 'visibility', 'pctVis')}</div>`);
+  if (p.ecoli)           rows.push(`<div class="val"><b>${esc(p.ecoli)}${rateBadge(p.ecoli, 'ecoli')}</b><span>${t('ecoliL')}</span>${pctLine(p, 'ecoli', 'pctClean')}</div>`);
+  if (p.entero)          rows.push(`<div class="val"><b>${esc(p.entero)}${rateBadge(p.entero, 'entero')}</b><span>${t('enteroL')}</span>${pctLine(p, 'entero', 'pctClean')}</div>`);
+  rows.push(`<div class="val"><b>${p.eu_class ? esc(t('eu')[p.eu_class] || p.eu_class) : '–'}</b><span>${t('euL')}</span></div>`);
+
+  sheetContent.innerHTML = `
+    <span class="badge" style="background:${COLORS[p.status]}">${esc(t('status')[p.status] || p.status_label)}</span>
+    <h2>${esc(p.name)}</h2>
+    <div class="sub">${[p.water, p.area, regionName(p)]
+      .filter(Boolean).map(esc).join(' · ')}</div>
+    ${rows.length ? `<div class="vals">${rows.join('')}</div>` : ''}
+    ${p.warn ? `<div class="note warn"><span class="note-text"><b>${t('warnL')}:</b> ${esc(p.warn)}</span></div>` : ''}
+    ${p.bacteriology && p.bacteriology.trim().toLowerCase() !== 'keine beanstandungen'
+      ? `<div class="note warn"><span class="note-text"><b>${t('bactL')}:</b> ${esc(p.bacteriology)}</span></div>` : ''}
+    ${p.info ? `<div class="note"><span class="note-text">${esc(p.info)}</span></div>` : ''}
+    ${p.amenities ? `<div class="sub" style="margin-top:8px">${[
+        p.amenities.wc     ? t('wc')     + ': ' + esc(p.amenities.wc)     : null,
+        p.amenities.gastro ? t('gastro') + ': ' + esc(p.amenities.gastro) : null,
+        p.amenities.rettung? t('rescue') + ': ' + esc(p.amenities.rettung): null,
+        p.amenities.strand ? t('beach')  + ': ' + esc(p.amenities.strand) : null,
+      ].filter(Boolean).join(' · ')}</div>` : ''}
+    ${p.link ? `<p><a href="${esc(p.link)}" target="_blank" rel="noopener">${t('official')}</a></p>` : ''}
+    <div class="foot">${p.date ? t('sampled') + ' ' + fmtDate(p.date) + ' · ' : ''}${t('source')}: ${p.region === 'berlin' ? 'LaGeSo Berlin' : 'Land Brandenburg'}</div>`;
+  clampNotes();
+  sheet.classList.add('open');
+  sheet.scrollTop = 0;
+}
+
+// Collapse long notes to 3 lines with a "read more" toggle
+function clampNotes() {
+  sheetContent.querySelectorAll('.note').forEach(n => {
+    const txt = n.querySelector('.note-text');
+    if (!txt) return;
+    n.classList.add('clamp');
+    if (txt.scrollHeight <= txt.clientHeight + 2) { n.classList.remove('clamp'); return; }
+    const b = document.createElement('button');
+    b.className = 'more';
+    b.textContent = t('more');
+    b.addEventListener('click', () => {
+      const clamped = n.classList.toggle('clamp');
+      b.textContent = clamped ? t('more') : t('less');
+    });
+    n.appendChild(b);
+  });
+}
+
+// selected lake gets a visible dark border (and survives re-renders)
+const markersById = new Map();
+let selectedId = null;
+const MARKER_DEF = { radius: 8,  weight: 2,   color: '#fff' };
+const MARKER_SEL = { radius: 10, weight: 3.5, color: '#1c2330' };
+
+function render() {
+  if (layer) layer.remove();
+  markersById.clear();
+  layer = L.layerGroup(allFeatures.filter(f => visible(f.properties)).map(f => {
+    const [lon, lat] = f.geometry.coordinates;
+    const p = f.properties;
+    const m = L.circleMarker([lat, lon], {
+      ...(p.id === selectedId ? MARKER_SEL : MARKER_DEF),
+      fillColor: COLORS[p.status] || COLORS.unknown, fillOpacity: .95
+    }).on('click', e => { L.DomEvent.stopPropagation(e); openSheet(p); });
+    markersById.set(p.id, m);
+    return m;
+  })).addTo(map);
+}
+
+function selectMarker(id) {
+  const prev = markersById.get(selectedId);
+  if (prev) prev.setStyle(MARKER_DEF).setRadius(MARKER_DEF.radius);
+  selectedId = id;
+  const m = markersById.get(id);
+  if (m) { m.setStyle(MARKER_SEL).setRadius(MARKER_SEL.radius); m.bringToFront(); }
+}
+
+function jumpTo(id) {
+  const f = allFeatures.find(f => f.properties.id === id);
+  if (!f) return;
+  const [lon, lat] = f.geometry.coordinates;
+  map.setView([lat, lon], 12);
+  openSheet(f.properties);
+}
+
+document.getElementById('chips').addEventListener('click', e => {
+  const b = e.target.closest('.chip');
+  if (!b || !b.dataset.f) return;
+  const f = b.dataset.f;
+  filters[f] = !filters[f];
+  if (f === 'berlin' && filters.berlin) filters.brandenburg = false;
+  if (f === 'brandenburg' && filters.brandenburg) filters.berlin = false;
+  document.querySelectorAll('.chip[data-f]').forEach(c =>
+    c.setAttribute('aria-pressed', String(filters[c.dataset.f])));
+  render();
+});
+
+// ---------------------------------------------------------------- search
+const searchIn  = document.getElementById('search');
+const searchRes = document.getElementById('search-results');
+
+// two foldings so "müggel", "mueggel" and "muggel" all find the Müggelsee
+const foldDe    = s => String(s).toLowerCase()
+  .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss');
+const foldAscii = s => String(s).toLowerCase()
+  .replace(/ä/g, 'a').replace(/ö/g, 'o').replace(/ü/g, 'u').replace(/ß/g, 'ss');
+const variants = s => [foldDe(s), foldAscii(s)];
+const anyStarts   = (hays, qs) => hays.some(h => qs.some(q => h.startsWith(q)));
+const anyIncludes = (hays, qs) => hays.some(h => qs.some(q => h.includes(q)));
+
+function doSearch(q) {
+  q = q.trim();
+  if (q.length < 2) { searchRes.hidden = true; searchIn.setAttribute('aria-expanded', 'false'); return; }
+  const qs = [...new Set(variants(q))];
+  const hits = allFeatures.map(f => {
+    const p = f.properties;
+    const nameVs = variants(p.name);
+    let score = -1;
+    if (anyStarts(nameVs, qs)) score = 0;
+    else if (anyIncludes(nameVs, qs)) score = 1;
+    else if (anyIncludes(variants([p.water, p.area].filter(Boolean).join(' ')), qs)) score = 2;
+    return { f, score };
+  }).filter(x => x.score >= 0)
+    .sort((a, b) => a.score - b.score ||
+      a.f.properties.name.localeCompare(b.f.properties.name, 'de'))
+    .slice(0, 8);
+  searchRes.innerHTML = hits.length
+    ? hits.map(x => {
+        const p = x.f.properties;
+        return `<li><button data-id="${esc(p.id)}">${esc(p.name)}<span class="sr-sub">${
+          [p.water, regionName(p)].filter(Boolean).map(esc).join(' · ')}</span></button></li>`;
+      }).join('')
+    : `<li class="sr-none">${esc(t('noHits'))}</li>`;
+  searchRes.hidden = false;
+  searchIn.setAttribute('aria-expanded', 'true');
+}
+
+function closeSearch() {
+  searchRes.hidden = true;
+  searchIn.setAttribute('aria-expanded', 'false');
+}
+
+searchIn.addEventListener('input', e => doSearch(e.target.value));
+searchIn.addEventListener('focus', e => doSearch(e.target.value));
+searchIn.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeSearch(); searchIn.blur(); }
+  if (e.key === 'Enter') {
+    const first = searchRes.querySelector('button[data-id]');
+    if (first) { closeSearch(); searchIn.blur(); jumpTo(first.dataset.id); }
+  }
+});
+// pointerdown beats the input's blur, so taps on results always land
+searchRes.addEventListener('pointerdown', e => {
+  const b = e.target.closest('button[data-id]');
+  if (!b) return;
+  e.preventDefault();
+  closeSearch();
+  searchIn.blur();
+  jumpTo(b.dataset.id);
+});
+document.addEventListener('click', e => {
+  if (!e.target.closest('.searchbar')) closeSearch();
+});
+
+// ---------------------------------------------------------- Top-10 rankings
+const rankEl   = document.getElementById('rank');
+const rankBack = document.getElementById('rank-backdrop');
+const rankTabs = document.getElementById('rank-tabs');
+const rankSub  = document.getElementById('rank-sub');
+const rankList = document.getElementById('rank-list');
+
+const num = v => {
+  const m = String(v ?? '').match(/\d+(?:[.,]\d+)?/);
+  return m ? parseFloat(m[0].replace(',', '.')) : null;
+};
+const EU_RANK = { ausgezeichnet: 0, gut: 1, ausreichend: 2, mangelhaft: 3 };
+
+const RANKINGS = {
+  warm:  { sub: 'rankSubTemp', val: p => p.temp, dir: -1, fmt: p => fmtVal(p.temp) + ' °C' },
+  cold:  { sub: 'rankSubTemp', val: p => p.temp, dir: 1,  fmt: p => fmtVal(p.temp) + ' °C' },
+  clear: { sub: 'rankSubVis',  val: p => num(p.visibility), dir: -1, fmt: p => fmtVal(num(p.visibility)) + ' m' },
+};
+let rankCurrent = 'warm';
+
+function renderRanking(key) {
+  if (!RANKINGS[key]) return;
+  rankCurrent = key;
+  rankTabs.querySelectorAll('button').forEach(b =>
+    b.setAttribute('aria-pressed', String(b.dataset.r === key)));
+  const r = RANKINGS[key];
+  const all = allFeatures
+    .map(f => ({ f, v: r.val(f.properties) }))
+    .filter(x => x.v != null)
+    .sort((a, b) =>
+      r.dir * (a.v - b.v) ||
+      (EU_RANK[a.f.properties.eu_class] ?? 4) - (EU_RANK[b.f.properties.eu_class] ?? 4) ||
+      a.f.properties.name.localeCompare(b.f.properties.name, 'de'));
+  const rows = all.slice(0, 10);
+  // be honest when the best value is shared by more lakes than fit in the list
+  const nBest = all.length && rows.length ? all.filter(x => x.v === rows[0].v).length : 0;
+  rankSub.textContent = t(r.sub) + (nBest > 10 ? ` · ${t('shareBest')(nBest)}` : '');
+  rankList.innerHTML = rows.map((x, i) => {
+    const p = x.f.properties;
+    return `<li><button data-id="${esc(p.id)}">
+      <span class="rank-pos">${i + 1}</span>
+      <span class="rank-name"><b>${esc(p.name)}</b><span>${
+        [p.water, regionName(p)].filter(Boolean).map(esc).join(' · ')}</span></span>
+      <span class="rank-val">${r.fmt(p)}</span></button></li>`;
+  }).join('');
+}
+
+function openRank()  { renderRanking(rankCurrent); rankBack.hidden = false; rankEl.hidden = false; }
+function closeRank() { rankBack.hidden = true; rankEl.hidden = true; }
+
+document.getElementById('rank-open').addEventListener('click', openRank);
+document.getElementById('rank-close').addEventListener('click', closeRank);
+rankBack.addEventListener('click', closeRank);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeRank(); closeFinder(); } });
+rankTabs.addEventListener('click', e => {
+  const b = e.target.closest('button[data-r]');
+  if (b) renderRanking(b.dataset.r);
+});
+rankList.addEventListener('click', e => {
+  const b = e.target.closest('button[data-id]');
+  if (!b) return;
+  closeRank();
+  jumpTo(b.dataset.id);
+});
+
+// ------------------------------------------------------------ lake finder
+const finderEl   = document.getElementById('finder');
+const finderBack = document.getElementById('finder-backdrop');
+const fForm      = document.getElementById('f-form');
+const fResults   = document.getElementById('f-results');
+const fAddr      = document.getElementById('f-addr');
+const fLocStatus = document.getElementById('f-loc-status');
+const fTimeIn    = document.getElementById('f-time');
+
+const SPEEDS = { car: { kmh: 65, overhead: 8 }, transit: { kmh: 28, overhead: 15 }, bike: { kmh: 16, overhead: 3 } };
+const GMODE  = { car: 'driving', transit: 'transit', bike: 'bicycling' };
+const PRIOS  = ['clear', 'warm', 'amen'];
+// "warm" is a direction choice (kalt / egal / warm), the others are importance
+const PRIO_OPTS = { clear: ['w0', 'w1', 'w2'], warm: ['tCold', 'w0', 'tWarm'], amen: ['w0', 'w1', 'w2'] };
+const finder = { loc: null, mode: 'car', weights: { clear: 2, warm: 1, amen: 0 } };
+let lastTop = null;
+
+function haversineKm(a, b) {
+  const R = 6371, d = Math.PI / 180;
+  const s = Math.sin((b.lat - a.lat) * d / 2) ** 2 +
+    Math.cos(a.lat * d) * Math.cos(b.lat * d) * Math.sin((b.lng - a.lng) * d / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(s));
+}
+const estMinutes = km =>
+  Math.round(km * 1.3 / SPEEDS[finder.mode].kmh * 60 + SPEEDS[finder.mode].overhead);
+
+function buildPrios() {
+  document.getElementById('f-prios').innerHTML = PRIOS.map(k => `
+    <div class="f-prio">
+      <span>${esc(t('prio_' + k))}</span>
+      <span class="seg">${PRIO_OPTS[k].map((sk, w) =>
+        `<button data-k="${k}" data-w="${w}" aria-pressed="${String(finder.weights[k] === w)}">${esc(t(sk))}</button>`
+      ).join('')}</span>
+    </div>`).join('');
+}
+document.getElementById('f-prios').addEventListener('click', e => {
+  const b = e.target.closest('button[data-k]');
+  if (!b) return;
+  finder.weights[b.dataset.k] = +b.dataset.w;
+  b.parentElement.querySelectorAll('button').forEach(x =>
+    x.setAttribute('aria-pressed', String(x === b)));
+});
+
+document.getElementById('f-mode').addEventListener('click', e => {
+  const b = e.target.closest('button[data-m]');
+  if (!b) return;
+  finder.mode = b.dataset.m;
+  document.querySelectorAll('#f-mode button').forEach(x =>
+    x.setAttribute('aria-pressed', String(x === b)));
+});
+
+fTimeIn.addEventListener('input', () => {
+  document.getElementById('f-time-val').textContent = fTimeIn.value;
+});
+
+document.getElementById('f-gps').addEventListener('click', () => {
+  if (!navigator.geolocation) { fLocStatus.textContent = t('fLocErr'); return; }
+  fLocStatus.textContent = '…';
+  navigator.geolocation.getCurrentPosition(
+    pos => {
+      finder.loc = { lat: pos.coords.latitude, lng: pos.coords.longitude, label: t('fMyLoc') };
+      fAddr.value = '';
+      fLocStatus.textContent = t('fLocSet') + ' ' + t('fMyLoc');
+    },
+    () => { fLocStatus.textContent = t('fLocErr'); });
+});
+
+async function geocode(q) {
+  const r = await fetch('https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&countrycodes=de&q='
+    + encodeURIComponent(q));
+  const j = await r.json();
+  if (!j[0]) return null;
+  return { lat: +j[0].lat, lng: +j[0].lon, q,
+           label: j[0].display_name.split(',').slice(0, 2).join(',') };
+}
+
+// amenity helpers: only judge amenities when the source actually provides them
+const hasAmen = v => v && !/^nein/i.test(v);
+
+function bringList(p) {
+  const items = [t('bBase')];
+  const a = p.amenities;
+  if (a) {
+    items.push(hasAmen(a.gastro) ? t('bGastro') : t('bNoGastro'));
+    if (!hasAmen(a.wc)) items.push(t('bNoWc'));
+    items.push(hasAmen(a.rettung) ? t('bRescue') : t('bNoRescue'));
+    if (a.strand) items.push(t('beach') + ': ' + a.strand);
+  }
+  const vis = num(p.visibility);
+  if (vis != null && vis < 1) items.push(t('bMurky'));
+  if (p.temp != null && p.temp < 19) items.push(t('bFresh')(fmtVal(p.temp)));
+  return items;
+}
+
+function finderCards(top) {
+  const medals = ['🥇', '🥈', '🥉'];
+  return top.map((x, i) => {
+    const p = x.f.properties;
+    const [lon, lat] = x.f.geometry.coordinates;
+    const gmaps = `https://www.google.com/maps/dir/?api=1&origin=${finder.loc.lat},${finder.loc.lng}`
+      + `&destination=${lat},${lon}&travelmode=${GMODE[finder.mode]}`;
+    const expect = [t('status')[p.status],
+      p.temp != null ? fmtVal(p.temp) + ' °C' : null,
+      p.visibility ? fmtVal(p.visibility) + ' m' : null,
+      p.eu_class ? 'EU: ' + (t('eu')[p.eu_class] || p.eu_class) : null,
+    ].filter(Boolean).join(' · ');
+    return `<div class="f-card">
+      <h3>${medals[i]} ${esc(p.name)}</h3>
+      <div class="f-sub">${[p.water, regionName(p)].filter(Boolean).map(esc).join(' · ')}</div>
+      <div style="margin-top:6px">📍 ${esc(t('fTravel')(x.km.toFixed(0), x.min))}</div>
+      <div style="margin-top:6px"><b style="font-size:13px">${t('fExpect')}:</b> <span class="f-sub">${esc(expect)}</span></div>
+      ${p.warn ? `<div class="f-sub" style="margin-top:4px">⚠️ ${esc(p.warn)}</div>` : ''}
+      <b style="display:block;margin-top:6px;font-size:13px">${t('fBring')}</b>
+      <ul class="f-sub">${bringList(p).map(b => `<li>${esc(b)}</li>`).join('')}</ul>
+      <div class="f-actions">
+        <a href="${gmaps}" target="_blank" rel="noopener">${t('fRoute')}</a>
+        <button class="f-link" data-id="${esc(p.id)}">${t('fShow')}</button>
+        ${p.link ? `<a href="${esc(p.link)}" target="_blank" rel="noopener">${t('official')}</a>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderResults(top) {
+  fForm.hidden = true;
+  fResults.hidden = false;
+  fResults.innerHTML =
+    (top.length ? finderCards(top) : `<div class="f-hint" style="margin-top:12px">${esc(t('fNone'))}</div>`) +
+    `<button class="f-cta" id="f-edit">${esc(t('fEdit'))}</button>`;
+}
+
+fResults.addEventListener('click', e => {
+  if (e.target.closest('#f-edit')) { fResults.hidden = true; fForm.hidden = false; return; }
+  const b = e.target.closest('.f-link[data-id]');
+  if (b) { closeFinder(); jumpTo(b.dataset.id); }
+});
+
+async function runFinder() {
+  const q = fAddr.value.trim();
+  if (q && (!finder.loc || finder.loc.q !== q)) {
+    fLocStatus.textContent = t('fSearching');
+    try { finder.loc = await geocode(q); } catch (e) { finder.loc = null; }
+    if (!finder.loc) { fLocStatus.textContent = t('fLocErr'); return; }
+  }
+  if (!finder.loc) { fLocStatus.textContent = t('fLocNeed'); return; }
+  fLocStatus.textContent = t('fLocSet') + ' ' + (finder.loc.label || '');
+
+  const maxMin = +fTimeIn.value;
+  // temp preference: 0 = kalt (prefer cold), 1 = egal (ignore), 2 = warm
+  const tempPref = finder.weights.warm;
+  const w = { clear: finder.weights.clear, amen: finder.weights.amen,
+              warm: tempPref === 1 ? 0 : 1 };
+  if (!PRIOS.some(k => w[k] > 0)) { w.clear = 1; w.amen = 1; }
+  const wSum = PRIOS.reduce((s, k) => s + w[k], 0);
+
+  lastTop = allFeatures
+    .map(f => {
+      const [lon, lat] = f.geometry.coordinates;
+      const km = haversineKm(finder.loc, { lat, lng: lon });
+      return { f, km, min: estMinutes(km), p: f.properties };
+    })
+    .filter(x => (x.p.status === 'green' || x.p.status === 'yellow') && x.min <= maxMin)
+    .map(x => {
+      const pct = x.p.pct || {};
+      const vals = {
+        warm: pct.temp == null ? null : (tempPref === 0 ? 100 - pct.temp : pct.temp),
+        clear: pct.visibility ?? null,
+        amen: x.p.amenities
+          ? ['wc', 'gastro', 'rettung', 'strand'].filter(k => hasAmen(x.p.amenities[k])).length / 4 * 100
+          : null,
+      };
+      x.score = PRIOS.reduce((s, k) => s + w[k] * (vals[k] ?? 50), 0) / wSum;
+      return x;
+    })
+    .sort((a, b) => b.score - a.score || a.min - b.min)
+    .slice(0, 3);
+  renderResults(lastTop);
+}
+
+document.getElementById('f-go').addEventListener('click', runFinder);
+fAddr.addEventListener('keydown', e => { if (e.key === 'Enter') runFinder(); });
+
+function openFinder()  { finderBack.hidden = false; finderEl.hidden = false; }
+function closeFinder() { finderBack.hidden = true; finderEl.hidden = true; }
+document.getElementById('finder-open').addEventListener('click', openFinder);
+document.getElementById('finder-close').addEventListener('click', closeFinder);
+finderBack.addEventListener('click', closeFinder);
+
+// ------------------------------------------------------- language toggle
+function applyLang() {
+  document.documentElement.lang = lang;
+  try { localStorage.setItem('lakes-lang', lang); } catch (e) {}
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const v = t(el.dataset.i18n);
+    if (typeof v === 'string') el.textContent = v;
+  });
+  searchIn.placeholder = t('searchPh');
+  const locate = document.getElementById('locate');
+  locate.title = t('locateT');
+  locate.setAttribute('aria-label', t('locateT'));
+  document.getElementById('rank-close').setAttribute('aria-label', t('close'));
+  document.getElementById('lang-toggle').textContent = lang === 'de' ? 'EN' : 'DE';
+  fAddr.placeholder = t('fAddrPh');
+  document.getElementById('f-go').textContent = t('fGo');
+  document.getElementById('f-est-hint').textContent = t('fEstHint');
+  buildPrios();
+  if (!rankEl.hidden) renderRanking(rankCurrent);
+  if (!finderEl.hidden && !fResults.hidden && lastTop) renderResults(lastTop);
+  if (sheet.classList.contains('open') && currentP) openSheet(currentP);
+}
+document.getElementById('lang-toggle').addEventListener('click', () => {
+  lang = lang === 'de' ? 'en' : 'de';
+  applyLang();
+});
+applyLang();
+
+document.getElementById('locate').addEventListener('click', () => {
+  map.locate({ setView: true, maxZoom: 12 });
+});
+map.on('locationfound', e => {
+  L.circleMarker(e.latlng, { radius: 6, color: '#155ec4', fillOpacity: 1 }).addTo(map);
+});
+
+fetch('data/lakes.geojson')
+  .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+  .then(fc => {
+    allFeatures = fc.features;
+    render();
+    if (allFeatures.length) {
+      map.fitBounds(L.featureGroup(allFeatures.map(f => {
+        const [lon, lat] = f.geometry.coordinates;
+        return L.marker([lat, lon]);
+      })).getBounds().pad(0.05));
+    }
+  })
+  .catch(err => {
+    sheetContent.innerHTML = `<h2>Daten nicht gefunden / data missing</h2>
+      <p>Bitte zuerst <code>python scripts/fetch_data.py</code> und
+      <code>python scripts/build_geojson.py</code> ausführen. (${esc(err.message)})</p>`;
+    sheet.classList.add('open');
+  });
+</script>
+</body>
+</html>

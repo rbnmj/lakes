@@ -1,0 +1,33 @@
+name: Weekly Brandenburg measurement fetch
+
+on:
+  schedule:
+    - cron: "30 3 * * 1"   # Mondays 03:30 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-details:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Ensure KML site list is current
+        run: python scripts/fetch_data.py
+
+      - name: Fetch detail pages (~250 requests, throttled)
+        run: python scripts/fetch_bb_details.py
+
+      - name: Commit messwerte.csv
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/brandenburg/messwerte.csv
+          git diff --cached --quiet || git commit -m "chore: weekly Brandenburg measurement update"
+          git push

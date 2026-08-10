@@ -33,7 +33,11 @@
   @media (max-width:560px) { .brand small { display:none; } }
 
   /* search */
-  .searchbar { position:relative; flex:1; min-width:0; pointer-events:auto; }
+  .searchbar {
+    position:relative; flex:0 1 300px; min-width:0;
+    margin-right:46px;           /* keep clear of the +/- zoom control (top right) */
+    pointer-events:auto;
+  }
   #search {
     width:100%; border:0; border-radius:12px; padding:10px 12px;
     font:inherit; font-size:14px; background:var(--bg); box-shadow:var(--shadow);
@@ -64,6 +68,12 @@
     box-shadow:var(--shadow); cursor:pointer; white-space:nowrap;
   }
   .chip[aria-pressed="true"] { background:var(--chip-on); color:#fff; }
+  .chip .beta {
+    margin-left:6px; padding:1px 6px; border-radius:999px;
+    background:#155ec4; color:#fff; font-size:10px; font-weight:700;
+    letter-spacing:.03em; text-transform:uppercase; vertical-align:1px;
+  }
+  .chip[aria-pressed="true"] .beta { background:rgba(255,255,255,.28); }
 
   /* locate button */
   #locate {
@@ -105,21 +115,59 @@
   #sheet a { color:#155ec4; font-weight:600; text-decoration:none; }
   .foot { margin-top:12px; font-size:12px; color:var(--muted); }
 
-  /* ranking + finder dialogs */
-  #rank-backdrop, #finder-backdrop { position:fixed; inset:0; z-index:1150; background:rgba(15,23,42,.35); }
-  #rank, #finder {
+  /* ranking + finder + filter dialogs */
+  #rank-backdrop, #finder-backdrop, #fil-backdrop { position:fixed; inset:0; z-index:1150; background:rgba(15,23,42,.35); }
+  #rank, #finder, #fil {
     position:fixed; z-index:1200; left:12px; right:12px; margin:0 auto; max-width:420px;
     top:calc(env(safe-area-inset-top) + 64px); max-height:78vh;
     background:var(--bg); border-radius:16px; box-shadow:var(--shadow);
     display:flex; flex-direction:column;
   }
-  #rank[hidden], #rank-backdrop[hidden], #finder[hidden], #finder-backdrop[hidden] { display:none; }
+  #rank[hidden], #rank-backdrop[hidden], #finder[hidden], #finder-backdrop[hidden],
+  #fil[hidden], #fil-backdrop[hidden] { display:none; }
   .rank-head { display:flex; align-items:center; padding:14px 16px 8px; }
   .rank-head b { font-size:17px; }
-  #rank-close, #finder-close {
+  #rank-close, #finder-close, #fil-close {
     margin-left:auto; border:0; background:var(--chip); border-radius:50%;
     width:30px; height:30px; font-size:14px; cursor:pointer;
   }
+
+  /* filter dialog */
+  #fil .f-sec > label { display:flex; justify-content:space-between; gap:8px; align-items:baseline; }
+  #fil .f-sec > label b { font-weight:700; font-size:13.5px; white-space:nowrap; }
+  #fil input[type=range] { width:100%; }
+  /* dual-thumb slider: two ranges stacked, only the thumbs stay clickable */
+  .dual { position:relative; height:30px; }
+  .dual::before, .dual::after {
+    content:''; position:absolute; top:13px; height:4px; border-radius:2px;
+  }
+  .dual::before { left:0; right:0; background:#d5d9e0; }
+  .dual::after  { left:var(--a,0%); right:var(--b,0%); background:#155ec4; }
+  .dual input[type=range] {
+    position:absolute; left:0; top:6px; width:100%; margin:0; z-index:2;
+    background:none; pointer-events:none; -webkit-appearance:none; appearance:none;
+  }
+  .dual input[type=range]::-webkit-slider-runnable-track { height:4px; border-radius:2px; background:transparent; }
+  .dual input[type=range]::-moz-range-track { height:4px; border-radius:2px; background:transparent; }
+  .dual input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance:none; pointer-events:auto; width:22px; height:22px; margin-top:-9px;
+    border-radius:50%; background:#155ec4; border:2px solid #fff; box-shadow:0 1px 4px rgba(0,0,0,.3); cursor:pointer;
+  }
+  .dual input[type=range]::-moz-range-thumb {
+    pointer-events:auto; width:18px; height:18px; border-radius:50%;
+    background:#155ec4; border:2px solid #fff; box-shadow:0 1px 4px rgba(0,0,0,.3); cursor:pointer;
+  }
+  .fil-chk { display:flex; align-items:center; gap:8px; font-size:13.5px; margin:12px 0 4px; cursor:pointer; }
+  .fil-chk input { width:17px; height:17px; }
+  #fil-count { font-size:13px; color:var(--muted); font-weight:600; margin-top:8px; }
+  .fil-btns { display:flex; gap:8px; }
+  .fil-btns .f-cta { flex:1 1 0; width:auto; min-width:0; margin-top:10px; }
+  #fil-reset { background:var(--chip); color:var(--ink); flex:0 0 38%; }
+  .chip .badge-n {
+    display:inline-block; margin-left:5px; min-width:17px; padding:0 5px;
+    border-radius:999px; background:#155ec4; color:#fff; font-size:11px; line-height:17px;
+  }
+  .chip[aria-pressed="true"] .badge-n { background:#fff; color:var(--chip-on); }
 
   /* lake finder */
   .f-body { padding:0 16px 14px; overflow-y:auto; }
@@ -199,14 +247,11 @@
     </div>
   </div>
   <div class="chips" id="chips">
-    <button class="chip" id="rank-open" aria-haspopup="dialog">🏆 Top 10</button>
-    <button class="chip" id="finder-open" aria-haspopup="dialog">🎯 <span data-i18n="finder"></span></button>
     <button class="chip" id="lang-toggle" title="Sprache / Language"></button>
+    <button class="chip" id="fil-open" aria-haspopup="dialog" aria-pressed="false">⚙ <span data-i18n="filter"></span><span id="fil-badge"></span></button>
     <button class="chip" data-f="green"  aria-pressed="false" data-i18n="chipGood"></button>
-    <button class="chip" data-f="warm"   aria-pressed="false">≥ 20 °C</button>
-    <button class="chip" data-f="eu"     aria-pressed="false" data-i18n="chipEU"></button>
-    <button class="chip" data-f="berlin" aria-pressed="false">Berlin</button>
-    <button class="chip" data-f="brandenburg" aria-pressed="false">Brandenburg</button>
+    <button class="chip" id="rank-open" aria-haspopup="dialog">Top 10</button>
+    <button class="chip" id="finder-open" aria-haspopup="dialog"><span data-i18n="finder"></span><span class="beta">Beta</span></button>
   </div>
 </header>
 
@@ -233,6 +278,39 @@
   </div>
   <div id="rank-sub"></div>
   <ol id="rank-list"></ol>
+</div>
+
+<div id="fil-backdrop" hidden></div>
+<div id="fil" role="dialog" aria-modal="true" aria-label="Filter" hidden>
+  <div class="rank-head">
+    <b>⚙ <span data-i18n="filter"></span></b>
+    <button id="fil-close">✕</button>
+  </div>
+  <div class="f-body">
+    <div class="f-sec">
+      <label><span data-i18n="temp"></span> <b id="fil-t-lab"></b></label>
+      <div class="dual">
+        <input id="fil-tmin" type="range" step="0.5" aria-label="min °C">
+        <input id="fil-tmax" type="range" step="0.5" aria-label="max °C">
+      </div>
+    </div>
+    <div class="f-sec">
+      <label><span data-i18n="vis"></span> <b id="fil-v-lab"></b></label>
+      <div class="dual">
+        <input id="fil-vmin" type="range" step="0.1" aria-label="min m">
+        <input id="fil-vmax" type="range" step="0.1" aria-label="max m">
+      </div>
+    </div>
+    <label class="fil-chk">
+      <input type="checkbox" id="fil-nodata" checked>
+      <span data-i18n="filNoData"></span>
+    </label>
+    <div id="fil-count"></div>
+    <div class="fil-btns">
+      <button class="f-cta" id="fil-reset"></button>
+      <button class="f-cta" id="fil-done"></button>
+    </div>
+  </div>
 </div>
 
 <div id="finder-backdrop" hidden></div>
@@ -309,6 +387,11 @@ const STR = {
     sampled: 'Messung vom', source: 'Quelle',
     more: 'mehr lesen', less: 'weniger anzeigen',
     close: 'Schließen', locateT: 'Meinen Standort anzeigen',
+    filter: 'Filter',
+    filNoData: 'Seen ohne Messwert weiterhin anzeigen',
+    filReset: 'Zurücksetzen', filDone: 'Fertig',
+    filCount: n => n === 1 ? '1 Badestelle passt' : `${n} Badestellen passen`,
+    filAll: 'alle', filRange: (a, b, u) => `${a}–${b} ${u}`,
     finder: 'Seefinder',
     fLoc: 'Startpunkt', fAddrPh: 'Adresse oder Ort …', fMyLoc: 'Mein Standort',
     fLocSet: 'Startpunkt:', fLocErr: 'Ort nicht gefunden – bitte Adresse prüfen',
@@ -316,7 +399,7 @@ const STR = {
     fMode: 'Verkehrsmittel', mCar: 'Auto', mTransit: 'ÖPNV', mBike: 'Rad',
     fTime: 'Max. Fahrzeit', fPrio: 'Was ist dir wichtig?',
     prio_warm: 'Wassertemperatur',
-    prio_clear: 'Sichttiefe', prio_amen: 'Ausstattung (WC, Gastro …)',
+    prio_clear: 'Sichttiefe', prio_amen: 'Ausstattung',
     w0: 'egal', w1: 'wichtig', w2: 'sehr wichtig',
     tCold: 'kalt', tWarm: 'warm',
     fGo: 'Meine Top 3 finden', fSearching: 'Suche Ort …',
@@ -357,6 +440,11 @@ const STR = {
     sampled: 'Measured on', source: 'Source',
     more: 'read more', less: 'show less',
     close: 'Close', locateT: 'Show my location',
+    filter: 'Filter',
+    filNoData: 'Keep showing lakes without a measurement',
+    filReset: 'Reset', filDone: 'Done',
+    filCount: n => n === 1 ? '1 bathing site matches' : `${n} bathing sites match`,
+    filAll: 'all', filRange: (a, b, u) => `${a}–${b} ${u}`,
     finder: 'Lake finder',
     fLoc: 'Starting point', fAddrPh: 'Address or place …', fMyLoc: 'My location',
     fLocSet: 'Starting point:', fLocErr: 'Place not found – please check the address',
@@ -364,7 +452,7 @@ const STR = {
     fMode: 'Transport', mCar: 'Car', mTransit: 'Transit', mBike: 'Bike',
     fTime: 'Max. travel time', fPrio: 'What matters to you?',
     prio_warm: 'Water temperature',
-    prio_clear: 'Visibility depth', prio_amen: 'Facilities (WC, food …)',
+    prio_clear: 'Visibility depth', prio_amen: 'Facilities',
     w0: 'n/a', w1: 'important', w2: 'very important',
     tCold: 'cold', tWarm: 'warm',
     fGo: 'Find my top 3', fSearching: 'Searching place …',
@@ -388,7 +476,10 @@ try {
 const t = key => STR[lang][key];
 
 const COLORS = { green:'#2e9e44', yellow:'#e0a800', red:'#d9432f', ban:'#7a1f14', unknown:'#8a8f98' };
-const filters = { green:false, warm:false, eu:false, berlin:false, brandenburg:false };
+const filters = { green:false };
+// numeric range filter (temperature / Sichttiefe); bounds are derived from the data
+const RB = { t:{ min:0, max:30 }, v:{ min:0, max:5 } };
+const range = { tMin:0, tMax:30, vMin:0, vMax:5, noData:true };
 let allFeatures = [], layer = null, currentP = null;
 
 const map = L.map('map', { zoomControl:false })
@@ -432,10 +523,22 @@ const fmtVal = v => lang === 'de' ? String(v).replace('.', ',') : String(v).repl
 
 function visible(p) {
   if (filters.green && p.status !== 'green') return false;
-  if (filters.warm && !(p.temp >= 20)) return false;
-  if (filters.eu && p.eu_class !== 'ausgezeichnet') return false;
-  const regionOn = filters.berlin || filters.brandenburg;
-  if (regionOn && !filters[p.region]) return false;
+  return inRange(p);
+}
+
+const tempOn = () => range.tMin > RB.t.min || range.tMax < RB.t.max;
+const visOn  = () => range.vMin > RB.v.min || range.vMax < RB.v.max;
+
+function inRange(p) {
+  if (tempOn()) {
+    if (p.temp == null) { if (!range.noData) return false; }
+    else if (p.temp < range.tMin || p.temp > range.tMax) return false;
+  }
+  if (visOn()) {
+    const v = num(p.visibility);
+    if (v == null) { if (!range.noData) return false; }
+    else if (v < range.vMin || v > range.vMax) return false;
+  }
   return true;
 }
 
@@ -568,11 +671,10 @@ document.getElementById('chips').addEventListener('click', e => {
   if (!b || !b.dataset.f) return;
   const f = b.dataset.f;
   filters[f] = !filters[f];
-  if (f === 'berlin' && filters.berlin) filters.brandenburg = false;
-  if (f === 'brandenburg' && filters.brandenburg) filters.berlin = false;
   document.querySelectorAll('.chip[data-f]').forEach(c =>
     c.setAttribute('aria-pressed', String(filters[c.dataset.f])));
   render();
+  syncFilterUI();
 });
 
 // ---------------------------------------------------------------- search
@@ -695,7 +797,7 @@ function closeRank() { rankBack.hidden = true; rankEl.hidden = true; }
 document.getElementById('rank-open').addEventListener('click', openRank);
 document.getElementById('rank-close').addEventListener('click', closeRank);
 rankBack.addEventListener('click', closeRank);
-document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeRank(); closeFinder(); } });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeRank(); closeFinder(); closeFilter(); } });
 rankTabs.addEventListener('click', e => {
   const b = e.target.closest('button[data-r]');
   if (b) renderRanking(b.dataset.r);
@@ -706,6 +808,98 @@ rankList.addEventListener('click', e => {
   closeRank();
   jumpTo(b.dataset.id);
 });
+
+// -------------------------------------------------- temperature / visibility filter
+const filEl    = document.getElementById('fil');
+const filBack  = document.getElementById('fil-backdrop');
+const filOpen  = document.getElementById('fil-open');
+const filBadge = document.getElementById('fil-badge');
+const tMinIn = document.getElementById('fil-tmin'), tMaxIn = document.getElementById('fil-tmax');
+const vMinIn = document.getElementById('fil-vmin'), vMaxIn = document.getElementById('fil-vmax');
+const noDataIn = document.getElementById('fil-nodata');
+
+const floorTo = (x, s) => Math.floor(x / s) * s;
+const ceilTo  = (x, s) => Math.ceil(x / s) * s;
+
+// Derive slider bounds from the actual measurements so the range always
+// spans real data (and both ends stay reachable).
+function initFilterBounds() {
+  const temps = allFeatures.map(f => f.properties.temp).filter(v => v != null);
+  const viss  = allFeatures.map(f => num(f.properties.visibility)).filter(v => v != null);
+  if (temps.length) RB.t = { min: floorTo(Math.min(...temps), 0.5), max: ceilTo(Math.max(...temps), 0.5) };
+  if (viss.length)  RB.v = { min: floorTo(Math.min(...viss),  0.1), max: ceilTo(Math.max(...viss),  0.1) };
+  RB.v.min = Math.max(0, +RB.v.min.toFixed(1));
+  RB.v.max = +RB.v.max.toFixed(1);
+  [tMinIn, tMaxIn].forEach(i => { i.min = RB.t.min; i.max = RB.t.max; });
+  [vMinIn, vMaxIn].forEach(i => { i.min = RB.v.min; i.max = RB.v.max; });
+  resetFilter(false);
+}
+
+function resetFilter(rerender = true) {
+  range.tMin = RB.t.min; range.tMax = RB.t.max;
+  range.vMin = RB.v.min; range.vMax = RB.v.max;
+  range.noData = true;
+  noDataIn.checked = true;
+  tMinIn.value = range.tMin; tMaxIn.value = range.tMax;
+  vMinIn.value = range.vMin; vMaxIn.value = range.vMax;
+  syncFilterUI();
+  if (rerender) render();
+}
+
+function readSliders(src) {
+  // keep the two thumbs from crossing over each other: the one being dragged
+  // wins and pushes the other along
+  let a = +tMinIn.value, b = +tMaxIn.value;
+  if (a > b) { if (src === tMinIn) b = a; else a = b; }
+  tMinIn.value = a; tMaxIn.value = b;
+  range.tMin = a; range.tMax = b;
+
+  let c = +vMinIn.value, d = +vMaxIn.value;
+  if (c > d) { if (src === vMinIn) d = c; else c = d; }
+  vMinIn.value = c; vMaxIn.value = d;
+  range.vMin = c; range.vMax = d;
+
+  range.noData = noDataIn.checked;
+}
+
+function rangeLabel(lo, hi, bMin, bMax, unit) {
+  if (lo <= bMin && hi >= bMax) return t('filAll');
+  if (lo <= bMin) return `≤ ${fmtVal(hi)} ${unit}`;
+  if (hi >= bMax) return `≥ ${fmtVal(lo)} ${unit}`;
+  return t('filRange')(fmtVal(lo), fmtVal(hi), unit);
+}
+
+// paint the selected span of each dual slider
+function paintTrack(el, lo, hi, b) {
+  const span = b.max - b.min || 1;
+  el.style.setProperty('--a', ((lo - b.min) / span * 100).toFixed(2) + '%');
+  el.style.setProperty('--b', ((b.max - hi) / span * 100).toFixed(2) + '%');
+}
+
+function syncFilterUI() {
+  paintTrack(tMinIn.parentElement, range.tMin, range.tMax, RB.t);
+  paintTrack(vMinIn.parentElement, range.vMin, range.vMax, RB.v);
+  document.getElementById('fil-t-lab').textContent =
+    rangeLabel(range.tMin, range.tMax, RB.t.min, RB.t.max, '°C');
+  document.getElementById('fil-v-lab').textContent =
+    rangeLabel(range.vMin, range.vMax, RB.v.min, RB.v.max, 'm');
+  const n = allFeatures.filter(f => visible(f.properties)).length;
+  document.getElementById('fil-count').textContent = t('filCount')(n);
+  const active = (tempOn() ? 1 : 0) + (visOn() ? 1 : 0);
+  filOpen.setAttribute('aria-pressed', String(active > 0));
+  filBadge.innerHTML = active ? `<span class="badge-n">${active}</span>` : '';
+}
+
+[tMinIn, tMaxIn, vMinIn, vMaxIn, noDataIn].forEach(i =>
+  i.addEventListener('input', () => { readSliders(i); syncFilterUI(); render(); }));
+
+document.getElementById('fil-reset').addEventListener('click', () => resetFilter());
+function openFilter()  { syncFilterUI(); filBack.hidden = false; filEl.hidden = false; }
+function closeFilter() { filBack.hidden = true; filEl.hidden = true; }
+filOpen.addEventListener('click', openFilter);
+document.getElementById('fil-close').addEventListener('click', closeFilter);
+document.getElementById('fil-done').addEventListener('click', closeFilter);
+filBack.addEventListener('click', closeFilter);
 
 // ------------------------------------------------------------ lake finder
 const finderEl   = document.getElementById('finder');
@@ -912,6 +1106,10 @@ function applyLang() {
   fAddr.placeholder = t('fAddrPh');
   document.getElementById('f-go').textContent = t('fGo');
   document.getElementById('f-est-hint').textContent = t('fEstHint');
+  document.getElementById('fil-reset').textContent = t('filReset');
+  document.getElementById('fil-done').textContent = t('filDone');
+  document.getElementById('fil-close').setAttribute('aria-label', t('close'));
+  syncFilterUI();
   buildPrios();
   if (!rankEl.hidden) renderRanking(rankCurrent);
   if (!finderEl.hidden && !fResults.hidden && lastTop) renderResults(lastTop);
@@ -934,6 +1132,7 @@ fetch('data/lakes.geojson')
   .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
   .then(fc => {
     allFeatures = fc.features;
+    initFilterBounds();
     render();
     if (allFeatures.length) {
       map.fitBounds(L.featureGroup(allFeatures.map(f => {

@@ -74,46 +74,57 @@ bnr,name,datum,ecoli,entero,temp_c,sicht_m
 19,"Massowburg, Beetzsee",2026-06-01,30.0,77.0,21.2,0.6
 19,"Massowburg, Beetzsee",2026-06-29,94.0,61.0,27.4,0.2
 19,"Massowburg, Beetzsee",2026-07-30,46.0,15.0,23.2,0.6
+19,"Massowburg, Beetzsee",2026-08-24,126.0,30.0,19.9,0.6
 20,"Malge, Breitlingsee",2026-05-04,15.0,15.0,17.5,1.0
 20,"Malge, Breitlingsee",2026-06-01,15.0,15.0,21.7,0.8
 20,"Malge, Breitlingsee",2026-06-29,15.0,15.0,27.5,0.8
 20,"Malge, Breitlingsee",2026-07-27,270.0,15.0,20.2,1.0
+20,"Malge, Breitlingsee",2026-08-24,15.0,15.0,17.6,1.0
 21,"Wendseeufer, Großer Wendsee",2026-05-04,15.0,15.0,18.6,1.2
 21,"Wendseeufer, Großer Wendsee",2026-06-01,15.0,15.0,21.8,1.0
 21,"Wendseeufer, Großer Wendsee",2026-06-29,179.0,61.0,28.5,
 21,"Wendseeufer, Großer Wendsee",2026-07-27,30.0,30.0,21.1,0.8
+21,"Wendseeufer, Großer Wendsee",2026-08-24,15.0,61.0,20.3,1.0
 22,"Brandenburg an der Havel OT Kirchmöser, Arke, Möserscher See",2026-05-04,61.0,15.0,18.3,1.2
 22,"Brandenburg an der Havel OT Kirchmöser, Arke, Möserscher See",2026-06-01,15.0,15.0,21.9,1.0
 22,"Brandenburg an der Havel OT Kirchmöser, Arke, Möserscher See",2026-06-29,144.0,15.0,27.7,0.1
 22,"Brandenburg an der Havel OT Kirchmöser, Arke, Möserscher See",2026-07-27,15.0,15.0,,1.0
+22,"Brandenburg an der Havel OT Kirchmöser, Arke, Möserscher See",2026-08-24,15.0,15.0,18.4,1.0
 23,"Camping- und Ferienpark am Plauer See, Plauer See",2026-05-04,15.0,15.0,17.8,1.4
 23,"Camping- und Ferienpark am Plauer See, Plauer See",2026-06-01,110.0,15.0,22.1,1.4
 23,"Camping- und Ferienpark am Plauer See, Plauer See",2026-06-29,504.0,15.0,27.7,0.1
 23,"Camping- und Ferienpark am Plauer See, Plauer See",2026-07-27,15.0,15.0,21.3,1.4
+23,"Camping- und Ferienpark am Plauer See, Plauer See",2026-08-24,61.0,15.0,19.6,1.4
 24,"Hauptteich, Badesee Bad Erna, Schönborn OT Lindena",2026-05-06,30.0,,18.0,1.5
 24,"Hauptteich, Badesee Bad Erna, Schönborn OT Lindena",2026-06-03,15.0,15.0,22.6,2.0
 24,"Hauptteich, Badesee Bad Erna, Schönborn OT Lindena",2026-07-01,15.0,15.0,26.0,1.2
 24,"Hauptteich, Badesee Bad Erna, Schönborn OT Lindena",2026-07-28,15.0,15.0,21.1,1.2
+24,"Hauptteich, Badesee Bad Erna, Schönborn OT Lindena",2026-08-26,15.0,15.0,20.7,1.5
 25,"Rückersdorf, Hauptstrand, Badesee Rückersdorf",2026-05-06,15.0,30.0,18.0,2.0
 25,"Rückersdorf, Hauptstrand, Badesee Rückersdorf",2026-06-03,15.0,15.0,23.0,2.0
 25,"Rückersdorf, Hauptstrand, Badesee Rückersdorf",2026-07-01,15.0,61.0,26.1,2.0
 25,"Rückersdorf, Hauptstrand, Badesee Rückersdorf",2026-07-28,46.0,15.0,22.3,2.0
+25,"Rückersdorf, Hauptstrand, Badesee Rückersdorf",2026-08-26,15.0,15.0,20.2,2.0
 26,"Am Rettungsturm, Waldbad Zeischa",2026-05-06,15.0,15.0,17.2,2.0
 26,"Am Rettungsturm, Waldbad Zeischa",2026-06-02,15.0,15.0,22.3,2.0
 26,"Am Rettungsturm, Waldbad Zeischa",2026-06-30,30.0,15.0,26.6,2.0
 26,"Am Rettungsturm, Waldbad Zeischa",2026-07-29,15.0,15.0,23.0,2.0
+26,"Am Rettungsturm, Waldbad Zeischa",2026-08-25,15.0,15.0,21.7,1.5
 27,"Strandbereich Gorden, Grünewalder Lauch",2026-05-06,15.0,15.0,17.1,2.0
 27,"Strandbereich Gorden, Grünewalder Lauch",2026-06-03,15.0,15.0,21.6,2.5
 27,"Strandbereich Gorden, Grünewalder Lauch",2026-07-01,15.0,15.0,25.0,2.0
 27,"Strandbereich Gorden, Grünewalder Lauch",2026-07-28,15.0,15.0,21.8,2.0
+27,"Strandbereich Gorden, Grünewalder Lauch",2026-08-26,15.0,15.0,20.9,2.5
 28,"Oststrand, Uferbereich, Falkenberg ""Kiebitz""",2026-05-06,30.0,15.0,17.6,3.0
 28,"Oststrand, Uferbereich, Falkenberg ""Kiebitz""",2026-06-02,15.0,15.0,22.1,2.0
 28,"Oststrand, Uferbereich, Falkenberg ""Kiebitz""",2026-06-30,197.0,30.0,27.2,2.0
 28,"Oststrand, Uferbereich, Falkenberg ""Kiebitz""",2026-07-29,15.0,15.0,22.6,1.5
+28,"Oststrand, Uferbereich, Falkenberg ""Kiebitz""",2026-08-25,15.0,15.0,21.6,1.4
 31,"Air force Beach, Badesee Brandis",2026-05-06,15.0,15.0,18.1,2.0
 31,"Air force Beach, Badesee Brandis",2026-06-02,15.0,15.0,23.4,2.0
 31,"Air force Beach, Badesee Brandis",2026-06-30,94.0,30.0,27.7,2.0
 31,"Air force Beach, Badesee Brandis",2026-07-29,15.0,15.0,21.9,1.5
+31,"Air force Beach, Badesee Brandis",2026-08-25,15.0,15.0,20.0,1.0
 35,"Ketzin/Havel, Ketziner Havelstrand, Havel",2026-05-04,15.0,15.0,19.5,1.5
 35,"Ketzin/Havel, Ketziner Havelstrand, Havel",2026-06-01,15.0,15.0,22.2,2.0
 35,"Ketzin/Havel, Ketziner Havelstrand, Havel",2026-06-29,195.0,15.0,27.3,1.1
@@ -461,74 +472,92 @@ bnr,name,datum,ecoli,entero,temp_c,sicht_m
 130,"Velten, Bernsteinsee",2026-06-01,94.0,30.0,22.0,1.0
 130,"Velten, Bernsteinsee",2026-07-01,15.0,15.0,26.6,1.0
 130,"Velten, Bernsteinsee",2026-07-29,15.0,15.0,21.8,0.8
+130,"Velten, Bernsteinsee",2026-08-25,15.0,15.0,20.6,1.0
 131,"Löwenberger Land OT Neuendorf, Große Plötze",2026-05-04,15.0,30.0,18.0,1.0
 131,"Löwenberger Land OT Neuendorf, Große Plötze",2026-06-02,15.0,15.0,21.2,1.0
 131,"Löwenberger Land OT Neuendorf, Große Plötze",2026-06-29,30.0,15.0,27.7,1.0
 131,"Löwenberger Land OT Neuendorf, Große Plötze",2026-07-27,30.0,15.0,21.5,1.0
+131,"Löwenberger Land OT Neuendorf, Große Plötze",2026-08-24,93.0,30.0,20.4,1.0
 132,"Gransee Gem. Stechlin OT Neuglobsow, Großer Stechlinsee",2026-05-04,15.0,15.0,14.4,1.0
 132,"Gransee Gem. Stechlin OT Neuglobsow, Großer Stechlinsee",2026-06-02,15.0,15.0,20.5,1.0
 132,"Gransee Gem. Stechlin OT Neuglobsow, Großer Stechlinsee",2026-06-29,15.0,15.0,25.5,1.0
 132,"Gransee Gem. Stechlin OT Neuglobsow, Großer Stechlinsee",2026-07-27,15.0,15.0,19.3,1.0
+132,"Gransee Gem. Stechlin OT Neuglobsow, Großer Stechlinsee",2026-08-24,15.0,15.0,18.9,1.0
 134,"Fürstenberg OT Himmelpfort-Pian, Haussee",2026-05-05,15.0,15.0,17.1,1.0
 134,"Fürstenberg OT Himmelpfort-Pian, Haussee",2026-06-03,15.0,15.0,20.7,0.8
 134,"Fürstenberg OT Himmelpfort-Pian, Haussee",2026-06-30,15.0,15.0,25.8,1.0
 134,"Fürstenberg OT Himmelpfort-Pian, Haussee",2026-07-28,15.0,15.0,20.6,1.0
+134,"Fürstenberg OT Himmelpfort-Pian, Haussee",2026-08-26,15.0,15.0,19.8,1.0
 135,"Mühlenbecker Land OT Schildow, Kiessee",2026-05-07,46.0,15.0,15.8,1.0
 135,"Mühlenbecker Land OT Schildow, Kiessee",2026-06-01,15.0,15.0,21.3,1.0
 135,"Mühlenbecker Land OT Schildow, Kiessee",2026-07-01,15.0,15.0,25.5,0.7
 135,"Mühlenbecker Land OT Schildow, Kiessee",2026-07-29,15.0,15.0,21.3,0.7
+135,"Mühlenbecker Land OT Schildow, Kiessee",2026-08-25,46.0,15.0,19.8,0.6
 136,"Gransee OT Seilershof, Kleiner Wentowsee",2026-05-04,15.0,15.0,19.1,0.9
 136,"Gransee OT Seilershof, Kleiner Wentowsee",2026-06-02,30.0,15.0,21.3,0.4
 136,"Gransee OT Seilershof, Kleiner Wentowsee",2026-06-29,15.0,15.0,28.2,0.4
 136,"Gransee OT Seilershof, Kleiner Wentowsee",2026-07-27,77.0,15.0,20.8,0.5
+136,"Gransee OT Seilershof, Kleiner Wentowsee",2026-08-24,15.0,15.0,19.3,0.4
 137,"Oranienburg, Lehnitzsee",2026-05-06,15.0,15.0,16.7,1.0
 137,"Oranienburg, Lehnitzsee",2026-06-01,15.0,15.0,20.7,1.0
 137,"Oranienburg, Lehnitzsee",2026-06-30,15.0,15.0,27.0,1.0
 137,"Oranienburg, Lehnitzsee",2026-07-29,15.0,15.0,20.8,0.8
+137,"Oranienburg, Lehnitzsee",2026-08-25,15.0,15.0,18.8,0.8
 138,"Fürstenberg OT Steinförde, Menowsee",2026-05-05,15.0,15.0,16.8,1.0
 138,"Fürstenberg OT Steinförde, Menowsee",2026-06-03,15.0,15.0,21.1,1.0
 138,"Fürstenberg OT Steinförde, Menowsee",2026-06-30,15.0,15.0,25.8,1.0
 138,"Fürstenberg OT Steinförde, Menowsee",2026-07-28,15.0,15.0,20.4,0.9
+138,"Fürstenberg OT Steinförde, Menowsee",2026-08-26,61.0,15.0,19.7,0.7
 139,"Fürstenberg OT Himmelpfort, Moderfitzsee",2026-05-05,45.0,30.0,17.1,0.5
 139,"Fürstenberg OT Himmelpfort, Moderfitzsee",2026-06-03,15.0,15.0,19.9,0.4
 139,"Fürstenberg OT Himmelpfort, Moderfitzsee",2026-06-30,15.0,30.0,25.6,0.7
 139,"Fürstenberg OT Himmelpfort, Moderfitzsee",2026-07-28,15.0,15.0,20.5,0.4
+139,"Fürstenberg OT Himmelpfort, Moderfitzsee",2026-08-26,15.0,15.0,19.7,0.6
 140,"Liebenwalde, Mühlensee",2026-05-04,15.0,15.0,19.1,1.0
 140,"Liebenwalde, Mühlensee",2026-06-02,15.0,15.0,22.5,1.0
 140,"Liebenwalde, Mühlensee",2026-06-29,61.0,15.0,27.1,1.0
 140,"Liebenwalde, Mühlensee",2026-07-27,15.0,15.0,21.7,1.0
+140,"Liebenwalde, Mühlensee",2026-08-24,15.0,15.0,20.7,0.9
 141,"Hennigsdorf OT Nieder Neuendorf, Nieder Neuendorfer See",2026-05-06,30.0,15.0,16.8,0.8
 141,"Hennigsdorf OT Nieder Neuendorf, Nieder Neuendorfer See",2026-06-01,15.0,15.0,23.6,0.6
 141,"Hennigsdorf OT Nieder Neuendorf, Nieder Neuendorfer See",2026-07-01,15.0,15.0,26.2,0.6
 141,"Hennigsdorf OT Nieder Neuendorf, Nieder Neuendorfer See",2026-07-29,61.0,15.0,21.1,0.4
+141,"Hennigsdorf OT Nieder Neuendorf, Nieder Neuendorfer See",2026-08-25,30.0,15.0,21.6,0.6
 143,"Mühlenbecker Land OT Zühlsdorf, Rahmer See",2026-05-06,15.0,15.0,17.1,1.0
 143,"Mühlenbecker Land OT Zühlsdorf, Rahmer See",2026-06-01,15.0,15.0,21.7,1.0
 143,"Mühlenbecker Land OT Zühlsdorf, Rahmer See",2026-07-01,15.0,15.0,26.7,0.9
 143,"Mühlenbecker Land OT Zühlsdorf, Rahmer See",2026-07-29,15.0,15.0,20.9,0.8
+143,"Mühlenbecker Land OT Zühlsdorf, Rahmer See",2026-08-25,15.0,15.0,18.6,0.5
 144,"Fürstenberg, Röblinsee",2026-05-05,15.0,15.0,16.9,1.0
 144,"Fürstenberg, Röblinsee",2026-06-03,15.0,15.0,20.0,1.0
 144,"Fürstenberg, Röblinsee",2026-06-29,397.0,30.0,27.6,1.0
 144,"Fürstenberg, Röblinsee",2026-07-28,61.0,61.0,19.5,1.0
+144,"Fürstenberg, Röblinsee",2026-08-26,15.0,30.0,19.5,0.7
 145,"Gransee Gem. Stechlin OT Menz, Roofensee",2026-05-04,15.0,15.0,15.8,1.0
 145,"Gransee Gem. Stechlin OT Menz, Roofensee",2026-06-02,15.0,15.0,20.0,1.0
 145,"Gransee Gem. Stechlin OT Menz, Roofensee",2026-06-29,30.0,15.0,26.7,1.0
 145,"Gransee Gem. Stechlin OT Menz, Roofensee",2026-07-27,15.0,15.0,20.7,1.0
+145,"Gransee Gem. Stechlin OT Menz, Roofensee",2026-08-24,15.0,15.0,20.0,1.0
 146,"Fürstenberg OT Himmelpfort, Campingplatz, Stolpsee",2026-05-05,77.0,15.0,16.0,1.0
 146,"Fürstenberg OT Himmelpfort, Campingplatz, Stolpsee",2026-06-03,15.0,15.0,19.8,1.0
 146,"Fürstenberg OT Himmelpfort, Campingplatz, Stolpsee",2026-06-30,15.0,15.0,26.0,1.0
 146,"Fürstenberg OT Himmelpfort, Campingplatz, Stolpsee",2026-07-28,15.0,15.0,20.1,0.6
+146,"Fürstenberg OT Himmelpfort, Campingplatz, Stolpsee",2026-08-26,15.0,15.0,19.8,0.7
 147,"Fürstenberg OT Himmelpfort, Fürstenberger Straße, Stolpsee",2026-05-05,15.0,15.0,15.8,1.0
 147,"Fürstenberg OT Himmelpfort, Fürstenberger Straße, Stolpsee",2026-06-03,15.0,15.0,20.1,1.0
 147,"Fürstenberg OT Himmelpfort, Fürstenberger Straße, Stolpsee",2026-06-30,30.0,15.0,25.9,1.0
 147,"Fürstenberg OT Himmelpfort, Fürstenberger Straße, Stolpsee",2026-07-28,15.0,15.0,20.1,0.5
+147,"Fürstenberg OT Himmelpfort, Fürstenberger Straße, Stolpsee",2026-08-26,15.0,15.0,19.9,0.8
 148,"Zehdenick-Neuhof, Waldbad",2026-05-04,15.0,15.0,18.9,0.9
 148,"Zehdenick-Neuhof, Waldbad",2026-06-02,270.0,15.0,21.8,1.0
 148,"Zehdenick-Neuhof, Waldbad",2026-06-29,46.0,30.0,28.1,0.9
 148,"Zehdenick-Neuhof, Waldbad",2026-07-27,15.0,15.0,20.6,1.0
+148,"Zehdenick-Neuhof, Waldbad",2026-08-24,15.0,15.0,19.7,1.0
 149,"Tier- und Freizeitpark Oranienburg OT Germendorf, Waldsee",2026-05-05,179.0,15.0,20.1,0.6
 149,"Tier- und Freizeitpark Oranienburg OT Germendorf, Waldsee",2026-06-01,61.0,143.0,22.7,0.4
 149,"Tier- und Freizeitpark Oranienburg OT Germendorf, Waldsee",2026-06-30,161.0,161.0,28.4,0.4
 149,"Tier- und Freizeitpark Oranienburg OT Germendorf, Waldsee",2026-07-29,46.0,15.0,25.9,0.4
+149,"Tier- und Freizeitpark Oranienburg OT Germendorf, Waldsee",2026-08-25,15.0,15.0,22.6,0.4
 151,"Schweinrich, Dranser See",2026-05-05,15.0,15.0,16.0,2.0
 151,"Schweinrich, Dranser See",2026-06-02,30.0,15.0,21.0,2.0
 151,"Schweinrich, Dranser See",2026-07-01,30.0,15.0,25.0,2.0
@@ -617,30 +646,37 @@ bnr,name,datum,ecoli,entero,temp_c,sicht_m
 174,"Grünewalde, Grünewalder Lauch",2026-06-01,15.0,15.0,20.9,2.0
 174,"Grünewalde, Grünewalder Lauch",2026-06-29,15.0,15.0,26.6,1.5
 174,"Grünewalde, Grünewalder Lauch",2026-07-27,15.0,15.0,21.5,2.5
+174,"Grünewalde, Grünewalder Lauch",2026-08-24,15.0,15.0,21.0,2.0
 175,"Großkoschen, Senftenberger See",2026-05-04,15.0,15.0,17.4,2.0
 175,"Großkoschen, Senftenberger See",2026-06-01,15.0,15.0,21.7,2.0
 175,"Großkoschen, Senftenberger See",2026-06-29,15.0,15.0,28.0,2.0
 175,"Großkoschen, Senftenberger See",2026-07-27,15.0,15.0,21.5,2.0
+175,"Großkoschen, Senftenberger See",2026-08-24,15.0,15.0,17.7,2.5
 176,"Niemtsch, Senftenberger See",2026-05-04,15.0,15.0,17.5,2.0
 176,"Niemtsch, Senftenberger See",2026-06-01,15.0,15.0,19.7,2.0
 176,"Niemtsch, Senftenberger See",2026-06-29,30.0,30.0,25.9,2.0
 176,"Niemtsch, Senftenberger See",2026-07-27,15.0,15.0,20.5,2.0
+176,"Niemtsch, Senftenberger See",2026-08-24,15.0,15.0,20.8,2.5
 177,"Senftenberg - Stadt, Senftenberger See",2026-05-04,15.0,15.0,13.7,2.5
 177,"Senftenberg - Stadt, Senftenberger See",2026-06-01,15.0,15.0,19.7,2.0
 177,"Senftenberg - Stadt, Senftenberger See",2026-06-29,61.0,30.0,25.6,2.0
 177,"Senftenberg - Stadt, Senftenberger See",2026-07-27,92.0,15.0,20.6,2.5
+177,"Senftenberg - Stadt, Senftenberger See",2026-08-24,213.0,109.0,20.9,2.5
 178,"Senftenberg/Buchwalde, Senftenberger See",2026-05-04,15.0,15.0,17.7,2.0
 178,"Senftenberg/Buchwalde, Senftenberger See",2026-06-01,15.0,15.0,21.1,2.0
 178,"Senftenberg/Buchwalde, Senftenberger See",2026-06-29,30.0,46.0,27.2,2.0
 178,"Senftenberg/Buchwalde, Senftenberger See",2026-07-27,15.0,15.0,20.5,2.5
+178,"Senftenberg/Buchwalde, Senftenberger See",2026-08-24,15.0,15.0,19.4,2.5
 179,"Waldbad Templin, Havel, Templiner See",2026-05-04,15.0,15.0,17.5,2.0
 179,"Waldbad Templin, Havel, Templiner See",2026-06-02,15.0,15.0,22.4,1.8
 179,"Waldbad Templin, Havel, Templiner See",2026-06-30,46.0,15.0,26.7,1.4
 179,"Waldbad Templin, Havel, Templiner See",2026-07-28,15.0,15.0,20.9,1.0
+179,"Waldbad Templin, Havel, Templiner See",2026-08-25,15.0,15.0,20.8,0.8
 180,"Stadtbad Park Babelsberg, Havel, Tiefer See",2026-05-04,15.0,15.0,18.2,2.0
 180,"Stadtbad Park Babelsberg, Havel, Tiefer See",2026-06-02,15.0,15.0,22.5,2.0
 180,"Stadtbad Park Babelsberg, Havel, Tiefer See",2026-06-30,15.0,15.0,27.1,1.1
 180,"Stadtbad Park Babelsberg, Havel, Tiefer See",2026-07-28,15.0,15.0,21.3,1.2
+180,"Stadtbad Park Babelsberg, Havel, Tiefer See",2026-08-25,143.0,61.0,20.9,1.0
 181,"Butzow, Campingplatz, Beetzsee",2026-05-04,15.0,15.0,17.3,0.5
 181,"Butzow, Campingplatz, Beetzsee",2026-06-01,15.0,15.0,22.6,0.6
 181,"Butzow, Campingplatz, Beetzsee",2026-06-29,968.0,61.0,26.9,
@@ -776,10 +812,12 @@ bnr,name,datum,ecoli,entero,temp_c,sicht_m
 216,"Templin, Campingplatz, Fährsee",2026-06-01,15.0,15.0,23.4,2.0
 216,"Templin, Campingplatz, Fährsee",2026-06-29,272.0,15.0,23.3,1.5
 216,"Templin, Campingplatz, Fährsee",2026-07-27,15.0,15.0,20.6,1.8
+216,"Templin, Campingplatz, Fährsee",2026-08-24,15.0,15.0,20.1,1.0
 217,"Klosterwalde, Zeltplatz, Gleuensee",2026-05-04,15.0,15.0,17.4,1.4
 217,"Klosterwalde, Zeltplatz, Gleuensee",2026-06-01,15.0,15.0,23.2,0.5
 217,"Klosterwalde, Zeltplatz, Gleuensee",2026-06-29,15.0,15.0,23.2,0.8
 217,"Klosterwalde, Zeltplatz, Gleuensee",2026-07-27,15.0,15.0,21.1,0.9
+217,"Klosterwalde, Zeltplatz, Gleuensee",2026-08-24,15.0,15.0,19.4,0.9
 218,"Gollin, Gollinsee",2026-05-12,15.0,15.0,15.4,5.0
 218,"Gollin, Gollinsee",2026-06-08,15.0,15.0,20.1,5.0
 218,"Gollin, Gollinsee",2026-07-06,15.0,15.0,22.0,3.5
@@ -792,6 +830,7 @@ bnr,name,datum,ecoli,entero,temp_c,sicht_m
 220,"Gramzow, Großer Kuhsee",2026-06-01,15.0,15.0,20.7,3.2
 220,"Gramzow, Großer Kuhsee",2026-06-29,46.0,15.0,26.6,3.8
 220,"Gramzow, Großer Kuhsee",2026-07-27,15.0,15.0,20.7,1.0
+220,"Gramzow, Großer Kuhsee",2026-08-24,15.0,15.0,20.2,2.0
 221,"Lychen, Strandbad, Großer Lychensee",2026-05-07,15.0,15.0,14.4,0.9
 221,"Lychen, Strandbad, Großer Lychensee",2026-06-04,15.0,15.0,19.9,1.0
 221,"Lychen, Strandbad, Großer Lychensee",2026-07-02,77.0,15.0,24.3,1.1
@@ -800,10 +839,12 @@ bnr,name,datum,ecoli,entero,temp_c,sicht_m
 222,"Hohengüstow, Großer See",2026-06-01,15.0,15.0,21.5,0.5
 222,"Hohengüstow, Großer See",2026-06-29,15.0,15.0,27.2,1.8
 222,"Hohengüstow, Großer See",2026-07-27,15.0,15.0,20.8,1.0
+222,"Hohengüstow, Großer See",2026-08-24,15.0,15.0,20.0,0.8
 223,"Fürstenwerder, Großer See",2026-05-05,15.0,15.0,15.3,1.2
 223,"Fürstenwerder, Großer See",2026-06-02,15.0,15.0,20.3,2.8
 223,"Fürstenwerder, Großer See",2026-06-30,15.0,15.0,25.1,3.0
 223,"Fürstenwerder, Großer See",2026-07-28,15.0,15.0,19.4,1.0
+223,"Fürstenwerder, Großer See",2026-08-25,15.0,15.0,19.5,2.0
 224,"Groß Väter, Großer Vätersee",2026-05-12,15.0,15.0,16.3,2.5
 224,"Groß Väter, Großer Vätersee",2026-06-08,15.0,15.0,20.3,2.5
 224,"Groß Väter, Großer Vätersee",2026-07-06,15.0,15.0,20.8,2.0
@@ -812,6 +853,7 @@ bnr,name,datum,ecoli,entero,temp_c,sicht_m
 225,"Warthe, Großer Warthesee",2026-06-01,15.0,15.0,22.3,2.5
 225,"Warthe, Großer Warthesee",2026-06-29,15.0,15.0,23.4,2.5
 225,"Warthe, Großer Warthesee",2026-07-27,15.0,46.0,20.2,2.8
+225,"Warthe, Großer Warthesee",2026-08-24,15.0,15.0,19.9,2.6
 226,"Hardenbeck, Haussee",2026-05-12,15.0,15.0,16.1,2.0
 226,"Hardenbeck, Haussee",2026-06-09,15.0,15.0,20.3,2.2
 226,"Hardenbeck, Haussee",2026-07-07,15.0,15.0,20.0,1.0
@@ -824,6 +866,7 @@ bnr,name,datum,ecoli,entero,temp_c,sicht_m
 228,"Falkenwalde,  OT Neu Kleinow, Kleinowsee",2026-06-01,15.0,15.0,20.7,3.0
 228,"Falkenwalde,  OT Neu Kleinow, Kleinowsee",2026-06-29,15.0,15.0,26.9,3.5
 228,"Falkenwalde,  OT Neu Kleinow, Kleinowsee",2026-07-27,15.0,15.0,20.9,1.0
+228,"Falkenwalde,  OT Neu Kleinow, Kleinowsee",2026-08-24,15.0,30.0,20.6,1.5
 229,"Milmersdorf, OT Petersdorf, Lübbesee",2026-05-12,15.0,15.0,17.5,2.2
 229,"Milmersdorf, OT Petersdorf, Lübbesee",2026-06-08,15.0,15.0,19.8,2.8
 229,"Milmersdorf, OT Petersdorf, Lübbesee",2026-07-06,15.0,15.0,20.7,2.0
@@ -836,42 +879,52 @@ bnr,name,datum,ecoli,entero,temp_c,sicht_m
 231,"Lützlow, Lützlower See",2026-06-01,15.0,15.0,20.4,3.0
 231,"Lützlow, Lützlower See",2026-06-29,46.0,15.0,26.6,4.2
 231,"Lützlow, Lützlower See",2026-07-27,15.0,30.0,20.5,1.0
+231,"Lützlow, Lützlower See",2026-08-24,1049.0,215.0,19.9,3.5
 232,"Naugarten, Naugartener See",2026-05-05,15.0,15.0,16.5,1.8
 232,"Naugarten, Naugartener See",2026-06-02,15.0,15.0,21.0,2.5
 232,"Naugarten, Naugartener See",2026-06-30,15.0,15.0,25.8,2.8
 232,"Naugarten, Naugartener See",2026-07-28,15.0,15.0,20.9,1.0
+232,"Naugarten, Naugartener See",2026-08-25,15.0,15.0,20.3,2.5
 233,"Fergitz, Oberuckersee",2026-05-06,15.0,15.0,15.1,2.5
 233,"Fergitz, Oberuckersee",2026-06-01,15.0,15.0,22.4,3.0
 233,"Fergitz, Oberuckersee",2026-06-30,15.0,15.0,23.5,2.2
 233,"Fergitz, Oberuckersee",2026-07-28,15.0,15.0,19.8,2.5
+233,"Fergitz, Oberuckersee",2026-08-25,15.0,15.0,20.2,3.0
 234,"Warnitz - Quast, Oberuckersee",2026-05-06,15.0,15.0,15.3,2.2
 234,"Warnitz - Quast, Oberuckersee",2026-06-03,15.0,15.0,21.2,3.0
 234,"Warnitz - Quast, Oberuckersee",2026-07-01,15.0,15.0,24.7,3.2
 234,"Warnitz - Quast, Oberuckersee",2026-07-29,15.0,15.0,21.0,1.0
+234,"Warnitz - Quast, Oberuckersee",2026-08-26,15.0,15.0,20.1,3.0
 235,"Stegelitz, Schifferhof, Oberuckersee",2026-05-06,15.0,15.0,16.5,2.3
 235,"Stegelitz, Schifferhof, Oberuckersee",2026-06-02,15.0,15.0,22.4,3.0
 235,"Stegelitz, Schifferhof, Oberuckersee",2026-06-30,15.0,15.0,23.5,2.0
 235,"Stegelitz, Schifferhof, Oberuckersee",2026-07-28,46.0,15.0,21.1,1.8
+235,"Stegelitz, Schifferhof, Oberuckersee",2026-08-25,15.0,15.0,21.1,2.2
 236,"Warnitz, Campingplatz, Oberuckersee",2026-05-06,15.0,15.0,15.3,1.5
 236,"Warnitz, Campingplatz, Oberuckersee",2026-06-03,15.0,15.0,21.2,3.2
 236,"Warnitz, Campingplatz, Oberuckersee",2026-07-01,61.0,46.0,25.7,2.5
 236,"Warnitz, Campingplatz, Oberuckersee",2026-07-29,15.0,15.0,20.4,1.0
+236,"Warnitz, Campingplatz, Oberuckersee",2026-08-26,45.0,15.0,19.8,3.0
 237,"Warnitz, Ferienhaussiedlung, Oberuckersee",2026-05-06,15.0,30.0,15.3,2.2
 237,"Warnitz, Ferienhaussiedlung, Oberuckersee",2026-06-03,15.0,15.0,21.2,3.0
 237,"Warnitz, Ferienhaussiedlung, Oberuckersee",2026-07-01,15.0,15.0,24.8,3.2
 237,"Warnitz, Ferienhaussiedlung, Oberuckersee",2026-07-29,15.0,15.0,20.4,1.0
+237,"Warnitz, Ferienhaussiedlung, Oberuckersee",2026-08-26,15.0,15.0,19.6,3.0
 238,"Röddelin, Zeltplatz, Röddelinsee",2026-05-06,15.0,15.0,15.8,0.8
 238,"Röddelin, Zeltplatz, Röddelinsee",2026-06-03,15.0,15.0,20.9,1.8
 238,"Röddelin, Zeltplatz, Röddelinsee",2026-07-01,15.0,15.0,23.6,1.2
 238,"Röddelin, Zeltplatz, Röddelinsee",2026-07-29,15.0,15.0,20.6,1.8
+238,"Röddelin, Zeltplatz, Röddelinsee",2026-08-26,15.0,30.0,21.0,2.6
 239,"Templin, OT Hindenburg, Röddelinsee",2026-05-06,15.0,15.0,16.1,0.8
 239,"Templin, OT Hindenburg, Röddelinsee",2026-06-03,15.0,15.0,21.3,2.0
 239,"Templin, OT Hindenburg, Röddelinsee",2026-07-01,30.0,15.0,23.3,2.0
 239,"Templin, OT Hindenburg, Röddelinsee",2026-07-29,15.0,15.0,20.5,2.0
+239,"Templin, OT Hindenburg, Röddelinsee",2026-08-26,15.0,15.0,20.4,2.0
 240,"Willmine, Sabinensee",2026-05-06,15.0,15.0,17.8,1.4
 240,"Willmine, Sabinensee",2026-06-02,15.0,15.0,23.1,1.6
 240,"Willmine, Sabinensee",2026-06-30,30.0,15.0,23.5,2.0
 240,"Willmine, Sabinensee",2026-07-28,15.0,15.0,20.8,1.5
+240,"Willmine, Sabinensee",2026-08-25,15.0,15.0,20.0,1.2
 241,"Boitzenburg, Schumellensee",2026-05-12,15.0,15.0,16.0,1.0
 241,"Boitzenburg, Schumellensee",2026-06-09,15.0,15.0,20.6,1.5
 241,"Boitzenburg, Schumellensee",2026-07-07,15.0,15.0,19.3,1.5
@@ -880,27 +933,33 @@ bnr,name,datum,ecoli,entero,temp_c,sicht_m
 242,"Templin, Freibad, Templiner See",2026-06-03,15.0,15.0,21.1,0.6
 242,"Templin, Freibad, Templiner See",2026-06-30,109.0,15.0,23.5,0.8
 242,"Templin, Freibad, Templiner See",2026-07-29,15.0,94.0,20.6,0.8
+242,"Templin, Freibad, Templiner See",2026-08-26,109.0,15.0,21.0,0.9
 243,"Templin, Schinderkuhle, Templiner See",2026-05-06,15.0,15.0,15.1,0.7
 243,"Templin, Schinderkuhle, Templiner See",2026-06-03,15.0,15.0,20.9,0.6
 243,"Templin, Schinderkuhle, Templiner See",2026-06-30,110.0,126.0,23.3,0.8
 243,"Templin, Schinderkuhle, Templiner See",2026-07-29,30.0,77.0,20.4,0.8
+243,"Templin, Schinderkuhle, Templiner See",2026-08-26,15.0,30.0,21.1,0.9
 244,"Prenzlau, Am Kap, Unteruckersee",2026-05-05,15.0,15.0,14.5,3.5
 244,"Prenzlau, Am Kap, Unteruckersee",2026-06-02,30.0,15.0,20.1,4.0
 244,"Prenzlau, Am Kap, Unteruckersee",2026-06-30,15.0,15.0,24.5,1.0
 244,"Prenzlau, Am Kap, Unteruckersee",2026-07-28,15.0,15.0,19.7,1.0
+244,"Prenzlau, Am Kap, Unteruckersee",2026-08-25,15.0,15.0,20.3,3.0
 245,"Prenzlau, Seebadeanstalt, Unteruckersee",2026-05-05,15.0,15.0,14.5,3.5
 245,"Prenzlau, Seebadeanstalt, Unteruckersee",2026-06-02,15.0,15.0,19.8,4.0
 245,"Prenzlau, Seebadeanstalt, Unteruckersee",2026-06-30,15.0,15.0,24.5,1.0
 245,"Prenzlau, Seebadeanstalt, Unteruckersee",2026-07-28,15.0,15.0,20.0,2.5
+245,"Prenzlau, Seebadeanstalt, Unteruckersee",2026-08-25,127.0,45.0,20.0,3.0
 246,"Röpersdorf, Unteruckersee",2026-05-05,15.0,15.0,14.9,2.0
 246,"Röpersdorf, Unteruckersee",2026-06-02,15.0,15.0,20.0,3.0
 246,"Röpersdorf, Unteruckersee",2026-06-30,15.0,15.0,25.0,3.5
 246,"Röpersdorf, Unteruckersee",2026-07-28,15.0,15.0,19.6,1.0
+246,"Röpersdorf, Unteruckersee",2026-08-25,15.0,15.0,20.4,3.0
 247,"Angermünde, Strandbad, Wolletzsee",2026-05-06,15.0,15.0,15.0,2.7
 247,"Angermünde, Strandbad, Wolletzsee",2026-06-03,15.0,15.0,19.8,3.5
 247,"Angermünde, Strandbad, Wolletzsee",2026-07-01,15.0,15.0,24.7,1.5
 247,"Angermünde, Strandbad, Wolletzsee",2026-07-27,,,21.0,1.5
 247,"Angermünde, Strandbad, Wolletzsee",2026-07-29,15.0,15.0,21.3,1.8
+247,"Angermünde, Strandbad, Wolletzsee",2026-08-26,15.0,15.0,20.7,1.5
 248,"Lychen, Zeltplatz 79, Wurlsee",2026-05-07,15.0,15.0,14.3,2.5
 248,"Lychen, Zeltplatz 79, Wurlsee",2026-06-04,77.0,15.0,19.8,2.5
 248,"Lychen, Zeltplatz 79, Wurlsee",2026-07-02,161.0,534.0,24.3,2.5
@@ -913,6 +972,7 @@ bnr,name,datum,ecoli,entero,temp_c,sicht_m
 251,"Templin, OT Ahrensdorf, Zaarsee",2026-06-01,15.0,15.0,24.3,1.2
 251,"Templin, OT Ahrensdorf, Zaarsee",2026-06-29,15.0,15.0,23.3,1.5
 251,"Templin, OT Ahrensdorf, Zaarsee",2026-07-27,30.0,15.0,20.7,1.5
+251,"Templin, OT Ahrensdorf, Zaarsee",2026-08-24,15.0,30.0,19.8,1.0
 253,"Lychen, Heilstätten, Zenssee",2026-05-07,15.0,15.0,14.1,2.5
 253,"Lychen, Heilstätten, Zenssee",2026-06-04,15.0,15.0,19.8,3.5
 253,"Lychen, Heilstätten, Zenssee",2026-07-02,15.0,15.0,24.5,1.8
@@ -944,10 +1004,12 @@ bnr,name,datum,ecoli,entero,temp_c,sicht_m
 266,"Grillendamm, Beetzsee",2026-06-01,110.0,15.0,22.0,1.1
 266,"Grillendamm, Beetzsee",2026-06-29,110.0,61.0,28.2,0.3
 266,"Grillendamm, Beetzsee",2026-07-27,46.0,46.0,21.0,1.0
+266,"Grillendamm, Beetzsee",2026-08-24,126.0,46.0,19.8,1.0
 267,"Temmen-Ringenwalde, Großer Krinertsee",2026-05-06,15.0,15.0,17.6,2.0
 267,"Temmen-Ringenwalde, Großer Krinertsee",2026-06-02,15.0,15.0,21.9,1.8
 267,"Temmen-Ringenwalde, Großer Krinertsee",2026-06-30,15.0,15.0,23.6,2.0
 267,"Temmen-Ringenwalde, Großer Krinertsee",2026-07-28,15.0,15.0,20.9,1.5
+267,"Temmen-Ringenwalde, Großer Krinertsee",2026-08-25,15.0,15.0,20.4,2.0
 268,"Schmölln, Schmöllner See",2026-05-07,15.0,15.0,14.7,0.8
 268,"Schmölln, Schmöllner See",2026-06-04,15.0,15.0,20.8,0.6
 268,"Schmölln, Schmöllner See",2026-07-02,15.0,15.0,23.3,1.0
@@ -972,10 +1034,12 @@ bnr,name,datum,ecoli,entero,temp_c,sicht_m
 274,"Warnitz, Am Schiffsanleger, Oberuckersee",2026-06-03,61.0,15.0,21.2,3.0
 274,"Warnitz, Am Schiffsanleger, Oberuckersee",2026-07-01,15.0,15.0,25.8,2.5
 274,"Warnitz, Am Schiffsanleger, Oberuckersee",2026-07-29,15.0,15.0,20.5,1.0
+274,"Warnitz, Am Schiffsanleger, Oberuckersee",2026-08-26,15.0,15.0,20.1,3.0
 275,"An der Badewiese, Groß Glienicker See",2026-05-04,15.0,15.0,17.5,2.0
 275,"An der Badewiese, Groß Glienicker See",2026-06-02,15.0,15.0,22.1,2.0
 275,"An der Badewiese, Groß Glienicker See",2026-06-30,179.0,110.0,26.9,1.4
 275,"An der Badewiese, Groß Glienicker See",2026-07-28,15.0,15.0,21.5,2.0
+275,"An der Badewiese, Groß Glienicker See",2026-08-25,15.0,15.0,20.7,2.0
 276,"Rathenow, Wolzensee",2026-05-04,144.0,30.0,20.4,1.5
 276,"Rathenow, Wolzensee",2026-06-01,15.0,15.0,22.5,2.0
 276,"Rathenow, Wolzensee",2026-06-29,30.0,15.0,28.1,2.0
@@ -984,14 +1048,17 @@ bnr,name,datum,ecoli,entero,temp_c,sicht_m
 277,"Laasow/Wüstenhain, Gräbendorfer See",2026-06-01,15.0,15.0,21.4,2.5
 277,"Laasow/Wüstenhain, Gräbendorfer See",2026-06-29,30.0,30.0,26.8,2.0
 277,"Laasow/Wüstenhain, Gräbendorfer See",2026-07-27,30.0,61.0,20.5,2.5
+277,"Laasow/Wüstenhain, Gräbendorfer See",2026-08-24,15.0,15.0,19.4,2.5
 278,"Reddern, Gräbendorfer See",2026-05-04,94.0,15.0,15.2,2.0
 278,"Reddern, Gräbendorfer See",2026-06-01,15.0,15.0,21.8,2.0
 278,"Reddern, Gräbendorfer See",2026-06-29,15.0,15.0,25.7,1.5
 278,"Reddern, Gräbendorfer See",2026-07-27,30.0,15.0,20.6,2.5
+278,"Reddern, Gräbendorfer See",2026-08-24,15.0,15.0,19.3,2.5
 279,"Templin, OT Beutel, Großer Beutelsee",2026-05-06,15.0,15.0,16.8,1.0
 279,"Templin, OT Beutel, Großer Beutelsee",2026-06-03,15.0,15.0,21.3,1.1
 279,"Templin, OT Beutel, Großer Beutelsee",2026-07-01,15.0,15.0,23.5,1.2
 279,"Templin, OT Beutel, Großer Beutelsee",2026-07-29,15.0,15.0,21.2,1.3
+279,"Templin, OT Beutel, Großer Beutelsee",2026-08-26,15.0,15.0,21.5,1.2
 280,"Flussbadestelle Schwedt/Oder, Hohensaaten-Friedrichsthaler Wasserstraße",2026-05-06,353.0,30.0,14.2,0.8
 280,"Flussbadestelle Schwedt/Oder, Hohensaaten-Friedrichsthaler Wasserstraße",2026-05-20,46.0,15.0,16.0,1.5
 280,"Flussbadestelle Schwedt/Oder, Hohensaaten-Friedrichsthaler Wasserstraße",2026-06-03,61.0,15.0,21.0,1.2
@@ -999,6 +1066,8 @@ bnr,name,datum,ecoli,entero,temp_c,sicht_m
 280,"Flussbadestelle Schwedt/Oder, Hohensaaten-Friedrichsthaler Wasserstraße",2026-07-01,30.0,15.0,25.8,1.0
 280,"Flussbadestelle Schwedt/Oder, Hohensaaten-Friedrichsthaler Wasserstraße",2026-07-15,127.0,15.0,21.7,1.0
 280,"Flussbadestelle Schwedt/Oder, Hohensaaten-Friedrichsthaler Wasserstraße",2026-07-29,15.0,15.0,21.3,1.2
+280,"Flussbadestelle Schwedt/Oder, Hohensaaten-Friedrichsthaler Wasserstraße",2026-08-12,61.0,15.0,21.8,1.0
+280,"Flussbadestelle Schwedt/Oder, Hohensaaten-Friedrichsthaler Wasserstraße",2026-08-26,30.0,30.0,20.0,1.0
 281,"Göttlin, Biwakplatz, Havel",2026-05-04,15.0,15.0,18.7,1.5
 281,"Göttlin, Biwakplatz, Havel",2026-06-01,61.0,15.0,22.4,2.0
 281,"Göttlin, Biwakplatz, Havel",2026-06-29,15.0,15.0,26.9,1.5
@@ -1011,6 +1080,7 @@ bnr,name,datum,ecoli,entero,temp_c,sicht_m
 283,"Zehdenick OT Zabelsdorf, Großer Wentowsee",2026-06-01,15.0,15.0,22.2,0.4
 283,"Zehdenick OT Zabelsdorf, Großer Wentowsee",2026-06-29,15.0,15.0,28.0,0.3
 283,"Zehdenick OT Zabelsdorf, Großer Wentowsee",2026-07-27,30.0,109.0,20.1,0.3
+283,"Zehdenick OT Zabelsdorf, Großer Wentowsee",2026-08-24,15.0,15.0,19.1,0.3
 284,"Dranse, Dranser See",2026-05-06,15.0,15.0,15.0,2.0
 284,"Dranse, Dranser See",2026-06-02,15.0,15.0,21.0,2.0
 284,"Dranse, Dranser See",2026-07-01,15.0,15.0,25.0,2.0

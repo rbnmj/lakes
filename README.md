@@ -22,6 +22,7 @@ water quality, temperature, visibility, hazards, amenities, on an interactive ma
 - [x] GitHub Actions: daily data refresh + Pages deploy (`.github/workflows/deploy.yml`)
 - [x] Fetch Brandenburg raw data (`python scripts/fetch_data.py`), refine KML parser if needed
 - [ ] Later: temperature history, VBB transport, OSM surroundings, GIS analysis
+- [ ] add Bird watching tips
 
 ## Data licenses
 
